@@ -1,15 +1,29 @@
-import logging
 import socket
 import sys
+import threading
+import time
+from log import serverLogger, getAdapter
+from hwmonitor import export
 
 # Settings
 host = 'localhost'
 port = 16779
 
-# Setup logging
-logging.basicConfig(level=logging.INFO,
-                    datefmt='%Y-%m-%d %H:%M:%S',
-                    format='%(asctime)s %(levelname)-4s %(message)s')
+# Client connection handler
+def handle_connection(connection, address, logger):
+    try:
+        # Continously send information to client
+        while True:
+            e = export()
+            connection.sendall(bytes(str(e['cpu_usage_package']).encode()))
+            time.sleep(0.5)
+
+    except OSError as e:
+        logger.info(e.strerror)
+    except Exception as e:
+        logger.error("An exception has occurred - {}".format(str(e)))
+    finally:
+        connection.close()
 
 # Print server information
 print('> Starting server')
@@ -24,26 +38,27 @@ sock.bind((host, port))
 # Listen for incoming connections
 sock.listen(1)
 
-logging.info('Server started')
-logging.info('Listening on {}:{}'.format(host, port))
+serverLogger.info('Server started')
+serverLogger.info('Listening on {}:{}'.format(host, port))
 
+# Server listen loop
 while True:
     try:
         # Wait for a connection
         connection, address = sock.accept()
+
+        # Log connection
         (client_addr, client_port) = address
-        logging.info("Connection - {}:{}".format(client_addr, client_port))
+        conn_logging_adapter = getAdapter("{}:{}".format(client_addr, client_port))
+        conn_logging_adapter.info("Incoming connection from {}:{}".format(client_addr, client_port))
 
-        with connection:
-            # Receive data from client
-            data = connection.recv(1024)
-
-            # Send reply to client
-            connection.sendall(b"Received")
+        # Start handling in new thread
+        t = threading.Thread(target=handle_connection, args=(connection, address, conn_logging_adapter))
+        t.start()
 
     except KeyboardInterrupt:
         break
 
 # Close the socket
 sock.close()
-logging.info("Server closed")
+serverLogger.info("Server closed")
