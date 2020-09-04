@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">HWMonitor</string>
+    <string name="cpu_usage_title">CPU Usage (Package)</string>
 </resources>
