@@ -1,64 +1,33 @@
-import socket
-import sys
-import threading
-import time
-from log import serverLogger, getAdapter
+from http.server import BaseHTTPRequestHandler, HTTPServer
 from hwmonitor import export
+import json
 
 # Settings
 host = 'localhost'
 port = 16779
 
-# Client connection handler
-def handle_connection(connection, address, logger):
+# Server Handler Class
+class MonitorServer(BaseHTTPRequestHandler):
+
+    # Set header for response
+    def _set_headers(self):
+        self.send_response(200)
+        self.send_header('Content-type', 'application/json')
+        self.end_headers()
+
+    # Handle GET Request
+    def do_GET(self):
+        self._set_headers()
+        self.wfile.write(json.dumps(export()).encode('utf-8'))
+
+
+def run(server_class=HTTPServer, handler_class=MonitorServer, port=8000):
+    httpd = server_class((host, port), MonitorServer)
     try:
-        # Continously send information to client
-        while True:
-            e = export()
-            connection.sendall(bytes(str(e['cpu_usage_package']).encode()))
-            time.sleep(0.5)
-
-    except OSError as e:
-        logger.info(e.strerror)
-    except Exception as e:
-        logger.error("An exception has occurred - {}".format(str(e)))
-    finally:
-        connection.close()
-
-# Print server information
-print('> Starting server')
-print('> Server address: {}:{}'.format(host, port))
-
-# Create a TCP/IP socket
-sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-
-# Bind the socket to the port
-sock.bind((host, port))
-
-# Listen for incoming connections
-sock.listen(1)
-
-serverLogger.info('Server started')
-serverLogger.info('Listening on {}:{}'.format(host, port))
-
-# Server listen loop
-while True:
-    try:
-        # Wait for a connection
-        connection, address = sock.accept()
-
-        # Log connection
-        (client_addr, client_port) = address
-        conn_logging_adapter = getAdapter("{}:{}".format(client_addr, client_port))
-        conn_logging_adapter.info("Incoming connection from {}:{}".format(client_addr, client_port))
-
-        # Start handling in new thread
-        t = threading.Thread(target=handle_connection, args=(connection, address, conn_logging_adapter))
-        t.start()
-
+        httpd.serve_forever()
     except KeyboardInterrupt:
-        break
+        pass
+    httpd.server_close()
 
-# Close the socket
-sock.close()
-serverLogger.info("Server closed")
+if __name__ == '__main__':
+    run()
