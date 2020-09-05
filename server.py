@@ -3,8 +3,8 @@ from hwmonitor import export
 import json
 
 # Settings
-host = 'localhost'
-port = 16779
+host = ''
+port = 8000
 
 # Server Handler Class
 class MonitorServer(BaseHTTPRequestHandler):
@@ -21,7 +21,7 @@ class MonitorServer(BaseHTTPRequestHandler):
         self.wfile.write(json.dumps(export()).encode('utf-8'))
 
 
-def run(server_class=HTTPServer, handler_class=MonitorServer, port=8000):
+def run(server_class=HTTPServer, handler_class=MonitorServer):
     httpd = server_class((host, port), MonitorServer)
     try:
         httpd.serve_forever()
