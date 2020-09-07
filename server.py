@@ -22,6 +22,8 @@ class MonitorServer(BaseHTTPRequestHandler):
 
 
 def run(server_class=HTTPServer, handler_class=MonitorServer):
+    print('> Starting server')
+    print('> Server address: {}:{}'.format(host, port))
     httpd = server_class((host, port), MonitorServer)
     try:
         httpd.serve_forever()
