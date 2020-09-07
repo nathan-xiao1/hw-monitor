@@ -1,4 +1,9 @@
 <resources>
     <string name="app_name">HWMonitor</string>
     <string name="cpu_usage_title">CPU Usage (Package)</string>
+    <string-array name="components">
+        <item>CPU</item>
+        <item>Memory</item>
+        <item>Storage</item>
+    </string-array>
 </resources>

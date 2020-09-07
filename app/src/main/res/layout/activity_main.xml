@@ -6,10 +6,15 @@
     android:orientation="vertical"
     tools:context=".MainActivity">
 
-    <androidx.fragment.app.FragmentContainerView
-        android:id="@+id/fragment"
-        android:name="com.destack.hwmonitor.fragments.CPUFragment"
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/component_tab_layout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="wrap_content" />
+
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/component_viewpager"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
 
 </LinearLayout>
