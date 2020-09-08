@@ -1,4 +1,4 @@
-package com.destack.hwmonitor.fragments
+package com.destack.hwmonitor
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -6,18 +6,18 @@ import androidx.lifecycle.ViewModel
 import org.json.JSONException
 import org.json.JSONObject
 
-class CPUViewModel : ViewModel() {
+class MainViewModel : ViewModel() {
 
-    // CPU Usage variables
-    private val _usage_package = MutableLiveData(0)
+    /* Private variables */
+    // Response data
     private val _response = MutableLiveData("No response")
 
-    val usage_package: LiveData<Int> = _usage_package
-    val response: LiveData<String> = _response
+    // CPU related variables
+    private val _cpu_usage_package = MutableLiveData(0)
 
-    fun parseJSON(json : JSONObject) {
-        _usage_package.value = json.getInt("cpu_usage_package")
-    }
+    /* Encapsulation */
+    val response: LiveData<String> = _response
+    val cpu_usage_package: LiveData<Int> = _cpu_usage_package
 
     fun updateResponse(response: String) {
         _response.value = response
@@ -27,6 +27,10 @@ class CPUViewModel : ViewModel() {
         } catch (e : JSONException) {
             e.printStackTrace()
         }
+    }
+
+    private fun parseJSON(json: JSONObject) {
+        _cpu_usage_package.value = json.getInt("cpu_usage_package")
     }
 
 }

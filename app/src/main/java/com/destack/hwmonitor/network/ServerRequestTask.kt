@@ -2,20 +2,20 @@ package com.destack.hwmonitor.network
 
 import android.os.AsyncTask
 import android.util.Log
-import com.destack.hwmonitor.fragments.CPUViewModel
+import com.destack.hwmonitor.MainViewModel
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import java.net.SocketTimeoutException
 import java.util.concurrent.TimeUnit
 
-class ServerRequestTask(vm: CPUViewModel) : AsyncTask<String, Void, String>() {
+class ServerRequestTask(vm: MainViewModel) : AsyncTask<String, Void, String>() {
 
     private var client = OkHttpClient.Builder()
         .connectTimeout(500, TimeUnit.MILLISECONDS)
         .readTimeout(500, TimeUnit.MILLISECONDS)
         .build()
 
-    private val viewModel: CPUViewModel = vm
+    private val viewModel: MainViewModel = vm
 
     override fun doInBackground(vararg params: String?): String? {
         val request = Request.Builder()
@@ -25,13 +25,16 @@ class ServerRequestTask(vm: CPUViewModel) : AsyncTask<String, Void, String>() {
             val response = client.newCall(request).execute()
             response.body()?.string()
         } catch (e : SocketTimeoutException) {
-            return null
+            null
+        } catch (e: Throwable) {
+            e.printStackTrace()
+            null
         }
     }
 
     override fun onPostExecute(result: String?) {
         super.onPostExecute(result)
-        if (result == null) {
+        if (result.isNullOrEmpty()) {
             Log.d("ServerRequestTask", "Request timed out")
         } else {
             viewModel.updateResponse(result.toString())

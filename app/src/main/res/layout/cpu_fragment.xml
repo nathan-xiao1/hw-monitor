@@ -6,7 +6,7 @@
     <data>
         <variable
             name="viewmodel"
-            type="com.destack.hwmonitor.fragments.CPUViewModel"/>
+            type="com.destack.hwmonitor.MainViewModel"/>
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -18,7 +18,7 @@
             android:id="@+id/textview_cpu_usage_value"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@{Integer.toString(viewmodel.usage_package) + `%`}"
+            android:text="@{Integer.toString(viewmodel.cpu_usage_package) + `%`}"
             android:textSize="36sp"
             app:layout_constraintBottom_toTopOf="@+id/textview_cpu_usage"
             app:layout_constraintEnd_toEndOf="parent"
