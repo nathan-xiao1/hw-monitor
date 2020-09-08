@@ -13,11 +13,15 @@ class MainViewModel : ViewModel() {
     private val _response = MutableLiveData("No response")
 
     // CPU related variables
-    private val _cpu_usage_package = MutableLiveData(0)
+    private val _cpuUsagePackage = MutableLiveData(0)
+
+    // Memory related variables
+    private val _memoryAvailable = MutableLiveData(0)
 
     /* Encapsulation */
     val response: LiveData<String> = _response
-    val cpu_usage_package: LiveData<Int> = _cpu_usage_package
+    val cpuUsagePackage: LiveData<Int> = _cpuUsagePackage
+    val memoryAvailable: LiveData<Int> = _memoryAvailable
 
     fun updateResponse(response: String) {
         _response.value = response
@@ -30,7 +34,7 @@ class MainViewModel : ViewModel() {
     }
 
     private fun parseJSON(json: JSONObject) {
-        _cpu_usage_package.value = json.getInt("cpu_usage_package")
+        _cpuUsagePackage.value = json.getInt("cpu_usage_package")
     }
 
 }

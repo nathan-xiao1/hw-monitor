@@ -6,35 +6,35 @@
     <data>
         <variable
             name="viewmodel"
-            type="com.destack.hwmonitor.MainViewModel"/>
+            type="com.destack.hwmonitor.MainViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".fragments.CPUFragment">
+        tools:context=".fragments.MemoryFragment">
 
         <TextView
-            android:id="@+id/textview_cpu_usage_value"
+            android:id="@+id/textview_memory_available_value"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@{Integer.toString(viewmodel.cpuUsagePackage) + `%`}"
+            android:text="@{Integer.toString(viewmodel.memoryAvailable) + ` GB`}"
             android:textSize="36sp"
-            app:layout_constraintBottom_toTopOf="@+id/textview_cpu_usage"
+            app:layout_constraintBottom_toTopOf="@+id/textview_memory_available"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_chainStyle="packed" />
 
         <TextView
-            android:id="@+id/textview_cpu_usage"
+            android:id="@+id/textview_memory_available"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/cpu_usage_title"
+            android:text="@string/memory_available_title"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/textview_cpu_usage_value" />
+            app:layout_constraintTop_toBottomOf="@id/textview_memory_available_value" />
 
         <TextView
             android:id="@+id/textview_debug"
@@ -44,7 +44,8 @@
             android:text="@{viewmodel.response}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/textview_cpu_usage" />
+            app:layout_constraintTop_toBottomOf="@id/textview_memory_available" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
 </layout>

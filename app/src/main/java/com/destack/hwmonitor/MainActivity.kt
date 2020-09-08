@@ -6,17 +6,14 @@ import android.os.Looper
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager2.widget.ViewPager2
+import com.destack.hwmonitor.adapters.CPU_ITEM
 import com.destack.hwmonitor.adapters.ComponentViewPagerAdapter
+import com.destack.hwmonitor.adapters.MEMORY_ITEM
+import com.destack.hwmonitor.adapters.STORAGE_ITEM
 import com.destack.hwmonitor.network.ServerRequestTask
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
-
 class MainActivity : AppCompatActivity() {
-
-    // Constants
-    private val CPU_ITEM = 0
-    private val MEMORY_ITEM = 1
-    private val STORAGE_ITEM = 2
 
     // ViewModel
     private lateinit var viewModel: MainViewModel
@@ -50,8 +47,14 @@ class MainActivity : AppCompatActivity() {
         mainHandler.post(updateTask)
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        mainHandler.removeCallbacks(updateTask)
+    }
+
     /**
      * Fetch data from server every 1 second in an AsyncTask
+     * @return Runnable object that fetch data from server every 1 second
      */
     private val updateTask = object : Runnable {
         override fun run() {
