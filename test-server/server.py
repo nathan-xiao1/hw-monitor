@@ -1,5 +1,5 @@
 from http.server import BaseHTTPRequestHandler, HTTPServer
-from hwmonitor import export
+from hwmonitor import get_data
 import json
 
 # Settings
@@ -18,12 +18,12 @@ class MonitorServer(BaseHTTPRequestHandler):
     # Handle GET Request
     def do_GET(self):
         self._set_headers()
-        self.wfile.write(json.dumps(export()).encode('utf-8'))
+        self.wfile.write(json.dumps(get_data()).encode('utf-8'))
 
 
 def run(server_class=HTTPServer, handler_class=MonitorServer):
     print('> Starting server')
-    print('> Server address: {}:{}'.format(host, port))
+    print('> Server address: {}:{}'.format(host if host != '' else 'localhost', port))
     httpd = server_class((host, port), MonitorServer)
     try:
         httpd.serve_forever()

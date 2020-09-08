@@ -1,22 +1,31 @@
 # https://stackoverflow.com/questions/3262603/accessing-cpu-temperature-in-python
-import psutil, time
+import psutil, time, math
 from functools import partial
 
 # Store information that are static
 _, cpu_freq_min, cpu_freq_max = psutil.cpu_freq()
+memory_total = math.ceil(psutil.virtual_memory().total / 1024 / 1024 / 1024)
+disk_partitions = psutil.disk_partitions()
+
 _static_info = {
     "cpu_count": psutil.cpu_count(),
     "cpu_freq_min": cpu_freq_min,
-    "cpu_freq_max": cpu_freq_max
+    "cpu_freq_max": cpu_freq_max,
+    "memory_total": memory_total,
+    "disk_partitions": disk_partitions,
 }
 
 # Dynamic information
 _info_map = {
     "cpu_usage_package": partial(psutil.cpu_percent, interval=None),
-    "cpu_usage_percpu": partial(psutil.cpu_percent, interval=None, percpu=True)
+    "cpu_usage_percpu": partial(psutil.cpu_percent, interval=None, percpu=True),
+    "memory_available": lambda : psutil.virtual_memory().available
 }
 
-def export():
+def get_static_info():
+    return _static_info
+
+def get_data():
     export_dict = {}
     for key, value in _info_map.items():
         export_dict[key] = value()
