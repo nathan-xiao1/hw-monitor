@@ -3,7 +3,7 @@ from hwmonitor import get_data
 import json
 
 # Settings
-host = ''
+host = '0.0.0.0'
 port = 8000
 
 # Server Handler Class
@@ -23,7 +23,8 @@ class MonitorServer(BaseHTTPRequestHandler):
 
 def run(server_class=HTTPServer, handler_class=MonitorServer):
     print('> Starting server')
-    print('> Server address: {}:{}'.format(host if host != '' else 'localhost', port))
+    print('> Server address: {}:{}'.format(host if host != '' else '0.0.0.0', port))
+    print('> Press Ctrl+Z to exit')
     httpd = server_class((host, port), MonitorServer)
     try:
         httpd.serve_forever()

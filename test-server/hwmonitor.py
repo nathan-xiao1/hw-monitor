@@ -2,9 +2,13 @@
 import psutil, time, math
 from functools import partial
 
+# Helper function
+def _byteToMB(byte):
+    return byte / 1024 / 1024
+
 # Store information that are static
 _, cpu_freq_min, cpu_freq_max = psutil.cpu_freq()
-memory_total = math.ceil(psutil.virtual_memory().total / 1024 / 1024 / 1024)
+memory_total = math.ceil(_byteToMB(psutil.virtual_memory().total))
 disk_partitions = psutil.disk_partitions()
 
 _static_info = {
@@ -19,8 +23,9 @@ _static_info = {
 _info_map = {
     "cpu_usage_package": partial(psutil.cpu_percent, interval=None),
     "cpu_usage_percpu": partial(psutil.cpu_percent, interval=None, percpu=True),
-    "memory_available": lambda : psutil.virtual_memory().available
+    "memory_available": lambda : _byteToMB(psutil.virtual_memory().available)
 }
+
 
 def get_static_info():
     return _static_info
