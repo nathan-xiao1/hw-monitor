@@ -18,7 +18,7 @@
             android:id="@+id/textview_memory_available_value"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@{Integer.toString(viewmodel.memoryAvailable) + ` GB`}"
+            android:text="@{Double.toString(viewmodel.memoryAvailable) + ` GB`}"
             android:textSize="36sp"
             app:layout_constraintBottom_toTopOf="@+id/textview_memory_available"
             app:layout_constraintEnd_toEndOf="parent"

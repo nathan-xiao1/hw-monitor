@@ -18,13 +18,18 @@ class ServerRequestTask(vm: MainViewModel) : AsyncTask<String, Void, String>() {
     private val viewModel: MainViewModel = vm
 
     override fun doInBackground(vararg params: String?): String? {
-        val request = Request.Builder()
-            .url("http://192.168.1.106:8000")
-            .build()
         return try {
+            val request = Request.Builder()
+            .url(viewModel.host)
+            .build()
+            Log.d("ServerRequestTask", "Requesting on ${viewModel.host}")
             val response = client.newCall(request).execute()
-            response.body()?.string()
+            response.body?.string()
+        } catch (e: IllegalArgumentException) {
+            Log.d("ServerRequestTask", "Invalid host")
+            null
         } catch (e : SocketTimeoutException) {
+            Log.d("ServerRequestTask", "Request timed out")
             null
         } catch (e: Throwable) {
             e.printStackTrace()
@@ -34,9 +39,7 @@ class ServerRequestTask(vm: MainViewModel) : AsyncTask<String, Void, String>() {
 
     override fun onPostExecute(result: String?) {
         super.onPostExecute(result)
-        if (result.isNullOrEmpty()) {
-            Log.d("ServerRequestTask", "Request timed out")
-        } else {
+        if (!result.isNullOrEmpty()) {
             viewModel.updateResponse(result.toString())
         }
     }

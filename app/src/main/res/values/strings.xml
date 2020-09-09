@@ -7,4 +7,6 @@
     <string name="nav_cpu">CPU</string>
     <string name="nav_memory">Memory</string>
     <string name="nav_storage">Storage</string>
+
+    <string name="menu_settings">Setting</string>
 </resources>

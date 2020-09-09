@@ -9,6 +9,12 @@ import org.json.JSONObject
 class MainViewModel : ViewModel() {
 
     /* Private variables */
+    // Settings
+    var host: String = "http://192.168.1.100:8000"
+        set(value) {
+            field = "http://$value"
+        }
+
     // Response data
     private val _response = MutableLiveData("No response")
 
@@ -16,12 +22,12 @@ class MainViewModel : ViewModel() {
     private val _cpuUsagePackage = MutableLiveData(0)
 
     // Memory related variables
-    private val _memoryAvailable = MutableLiveData(0)
+    private val _memoryAvailable = MutableLiveData(0.0)
 
     /* Encapsulation */
     val response: LiveData<String> = _response
     val cpuUsagePackage: LiveData<Int> = _cpuUsagePackage
-    val memoryAvailable: LiveData<Int> = _memoryAvailable
+    val memoryAvailable: LiveData<Double> = _memoryAvailable
 
     fun updateResponse(response: String) {
         _response.value = response
@@ -35,6 +41,7 @@ class MainViewModel : ViewModel() {
 
     private fun parseJSON(json: JSONObject) {
         _cpuUsagePackage.value = json.getInt("cpu_usage_package")
+        _memoryAvailable.value = json.getDouble("memory_available")
     }
 
 }

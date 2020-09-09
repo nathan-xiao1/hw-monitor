@@ -1,10 +1,15 @@
 package com.destack.hwmonitor
 
+import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.view.Menu
+import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
+import androidx.preference.PreferenceManager
 import androidx.viewpager2.widget.ViewPager2
 import com.destack.hwmonitor.adapters.CPU_ITEM
 import com.destack.hwmonitor.adapters.ComponentViewPagerAdapter
@@ -12,6 +17,7 @@ import com.destack.hwmonitor.adapters.MEMORY_ITEM
 import com.destack.hwmonitor.adapters.STORAGE_ITEM
 import com.destack.hwmonitor.network.ServerRequestTask
 import com.google.android.material.bottomnavigation.BottomNavigationView
+
 
 class MainActivity : AppCompatActivity() {
 
@@ -30,8 +36,17 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        // Save the default values in shared preferences
+        PreferenceManager.setDefaultValues(this, R.xml.preferences, false)
+        val sharedPref = PreferenceManager.getDefaultSharedPreferences(this)
+
         // Create or get existing viewModel
         viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
+        viewModel.host =  sharedPref.getString("server_ip", "192.168.1.100") +
+                ":" + sharedPref.getString("server_host", "8000")
+
+        // Set toolbar as action bar
+        setSupportActionBar(findViewById(R.id.toolbar))
 
         // Set and initialise view pager adapter
         viewPager = findViewById(R.id.component_viewpager)
@@ -45,11 +60,30 @@ class MainActivity : AppCompatActivity() {
         // Add the updateTask to fetch data from server continuously
         mainHandler = Handler(Looper.getMainLooper())
         mainHandler.post(updateTask)
+
+        // Set preference change listener
+       sharedPref.registerOnSharedPreferenceChangeListener(preferenceChangeListener)
     }
 
     override fun onDestroy() {
         super.onDestroy()
         mainHandler.removeCallbacks(updateTask)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu_main, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.action_settings -> {
+                val intent = Intent(this, SettingsActivity::class.java)
+                startActivity(intent)
+                return true
+            }
+        }
+        return super.onOptionsItemSelected(item)
     }
 
     /**
@@ -103,5 +137,16 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    /**
+     * OnSharedPreferenceChangeListener for SharedPreference
+     * Update the IP/Port for network requests
+     */
+    private val preferenceChangeListener =
+        SharedPreferences.OnSharedPreferenceChangeListener { p0, p1 ->
+            when (p1) {
+                "server_ip", "server_port" -> viewModel.host =
+                    p0?.getString("server_ip", "192.168.1.100") + ":" + p0?.getString("server_host", "8000")
+            }
+        }
 
 }
