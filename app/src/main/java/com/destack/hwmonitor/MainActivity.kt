@@ -3,8 +3,6 @@ package com.destack.hwmonitor
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
@@ -15,7 +13,6 @@ import com.destack.hwmonitor.adapters.CPU_ITEM
 import com.destack.hwmonitor.adapters.ComponentViewPagerAdapter
 import com.destack.hwmonitor.adapters.MEMORY_ITEM
 import com.destack.hwmonitor.adapters.STORAGE_ITEM
-import com.destack.hwmonitor.network.ServerRequestTask
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 
@@ -23,9 +20,6 @@ class MainActivity : AppCompatActivity() {
 
     // ViewModel
     private lateinit var viewModel: MainViewModel
-
-    // Handler
-    private lateinit var mainHandler: Handler
 
     // Navigation related variables
     private val adapter = ComponentViewPagerAdapter(this)
@@ -57,17 +51,8 @@ class MainActivity : AppCompatActivity() {
         bottomNavBar = findViewById(R.id.component_bottom_nav)
         bottomNavBar.setOnNavigationItemSelectedListener(navigationItemSelectedListener)
 
-        // Add the updateTask to fetch data from server continuously
-        mainHandler = Handler(Looper.getMainLooper())
-        mainHandler.post(updateTask)
-
         // Set preference change listener
        sharedPref.registerOnSharedPreferenceChangeListener(preferenceChangeListener)
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        mainHandler.removeCallbacks(updateTask)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -84,17 +69,6 @@ class MainActivity : AppCompatActivity() {
             }
         }
         return super.onOptionsItemSelected(item)
-    }
-
-    /**
-     * Fetch data from server every 1 second in an AsyncTask
-     * @return Runnable object that fetch data from server every 1 second
-     */
-    private val updateTask = object : Runnable {
-        override fun run() {
-            ServerRequestTask(viewModel).execute()
-            mainHandler.postDelayed(this, 1000)
-        }
     }
 
     /**

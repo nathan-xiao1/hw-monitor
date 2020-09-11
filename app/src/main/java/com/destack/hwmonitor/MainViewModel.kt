@@ -3,10 +3,31 @@ package com.destack.hwmonitor
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.destack.hwmonitor.network.serverRequest
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.json.JSONException
 import org.json.JSONObject
 
 class MainViewModel : ViewModel() {
+
+    // Start coroutine to request data from server continuously
+    init {
+        viewModelScope.launch(Dispatchers.IO) {
+            while (true) {
+                val response = serverRequest(host)
+                if (!response.isNullOrEmpty()) {
+                    withContext(Dispatchers.Main) {
+                        updateResponse(response)
+                    }
+                }
+                delay(1000)
+            }
+        }
+    }
 
     /* Private variables */
     // Settings
@@ -29,7 +50,7 @@ class MainViewModel : ViewModel() {
     val cpuUsagePackage: LiveData<Int> = _cpuUsagePackage
     val memoryAvailable: LiveData<Double> = _memoryAvailable
 
-    fun updateResponse(response: String) {
+    private fun updateResponse(response: String) {
         _response.value = response
         try {
             val json = JSONObject(response)

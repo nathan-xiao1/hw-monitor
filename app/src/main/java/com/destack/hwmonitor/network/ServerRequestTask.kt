@@ -1,28 +1,32 @@
 package com.destack.hwmonitor.network
 
-import android.os.AsyncTask
 import android.util.Log
-import com.destack.hwmonitor.MainViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import java.net.SocketTimeoutException
 import java.util.concurrent.TimeUnit
 
-class ServerRequestTask(vm: MainViewModel) : AsyncTask<String, Void, String>() {
+val client = OkHttpClient.Builder()
+    .connectTimeout(500, TimeUnit.MILLISECONDS)
+    .readTimeout(500, TimeUnit.MILLISECONDS)
+    .build()
 
-    private var client = OkHttpClient.Builder()
-        .connectTimeout(500, TimeUnit.MILLISECONDS)
-        .readTimeout(500, TimeUnit.MILLISECONDS)
-        .build()
-
-    private val viewModel: MainViewModel = vm
-
-    override fun doInBackground(vararg params: String?): String? {
-        return try {
+/**
+ * Suspendable function to request data from server
+ * @param host The host address of the server
+ * @return a JSON string of the response
+ */
+@Suppress("BlockingMethodInNonBlockingContext")
+suspend fun serverRequest(host: String): String? {
+    // Move the execution of the coroutine to the I/O dispatcher
+    return withContext(Dispatchers.IO) {
+        try {
             val request = Request.Builder()
-            .url(viewModel.host)
-            .build()
-            Log.d("ServerRequestTask", "Requesting on ${viewModel.host}")
+                .url(host)
+                .build()
+            Log.d("ServerRequestTask", "Requesting on $host")
             val response = client.newCall(request).execute()
             response.body?.string()
         } catch (e: IllegalArgumentException) {
@@ -34,13 +38,6 @@ class ServerRequestTask(vm: MainViewModel) : AsyncTask<String, Void, String>() {
         } catch (e: Throwable) {
             e.printStackTrace()
             null
-        }
-    }
-
-    override fun onPostExecute(result: String?) {
-        super.onPostExecute(result)
-        if (!result.isNullOrEmpty()) {
-            viewModel.updateResponse(result.toString())
         }
     }
 }
