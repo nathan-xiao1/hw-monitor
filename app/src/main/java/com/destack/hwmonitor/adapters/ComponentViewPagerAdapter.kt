@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.destack.hwmonitor.fragments.CPUFragment
 import com.destack.hwmonitor.fragments.MemoryFragment
+import com.destack.hwmonitor.fragments.StorageFragment
 
 const val CPU_ITEM = 0
 const val MEMORY_ITEM = 1
@@ -18,6 +19,7 @@ class ComponentViewPagerAdapter(activity: AppCompatActivity) : FragmentStateAdap
         return when (position) {
             CPU_ITEM -> CPUFragment.newInstance()
             MEMORY_ITEM -> MemoryFragment.newInstance()
+            STORAGE_ITEM -> StorageFragment.newInstance()
             else -> CPUFragment.newInstance()
         }
     }

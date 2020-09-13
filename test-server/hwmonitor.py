@@ -34,4 +34,5 @@ def get_data():
     export_dict = {}
     for key, value in _info_map.items():
         export_dict[key] = value()
+    export_dict.update(_static_info)
     return export_dict

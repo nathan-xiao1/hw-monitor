@@ -19,7 +19,7 @@ val client = OkHttpClient.Builder()
  * @return a JSON string of the response
  */
 @Suppress("BlockingMethodInNonBlockingContext")
-suspend fun serverRequest(host: String): String? {
+suspend fun serverRequest(host: String): Pair<Int, String> {
     // Move the execution of the coroutine to the I/O dispatcher
     return withContext(Dispatchers.IO) {
         try {
@@ -28,16 +28,16 @@ suspend fun serverRequest(host: String): String? {
                 .build()
             Log.d("ServerRequestTask", "Requesting on $host")
             val response = client.newCall(request).execute()
-            response.body?.string()
+            Pair(200, response.body?.string().toString())
         } catch (e: IllegalArgumentException) {
-            Log.d("ServerRequestTask", "Invalid host")
-            null
+            Log.d("ServerRequestTask", "Host Not Found")
+            Pair(404, "Host Not Found")
         } catch (e : SocketTimeoutException) {
-            Log.d("ServerRequestTask", "Request timed out")
-            null
+            Log.d("ServerRequestTask", "Request Timeout")
+            Pair(408, "Request Timeout")
         } catch (e: Throwable) {
             e.printStackTrace()
-            null
+            Pair(0, "An error has occurred")
         }
     }
 }

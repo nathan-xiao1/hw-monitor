@@ -14,6 +14,7 @@ import com.destack.hwmonitor.adapters.ComponentViewPagerAdapter
 import com.destack.hwmonitor.adapters.MEMORY_ITEM
 import com.destack.hwmonitor.adapters.STORAGE_ITEM
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.material.snackbar.Snackbar
 
 
 class MainActivity : AppCompatActivity() {
@@ -26,9 +27,19 @@ class MainActivity : AppCompatActivity() {
     private lateinit var bottomNavBar: BottomNavigationView
     private lateinit var viewPager: ViewPager2
 
+    // Snackbar
+    private lateinit var snackbar: Snackbar
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        // Create SnackBar
+        snackbar = Snackbar.make(
+            findViewById(R.id.root_view),
+            "An error has occurred",
+            Snackbar.LENGTH_INDEFINITE
+        )
 
         // Save the default values in shared preferences
         PreferenceManager.setDefaultValues(this, R.xml.preferences, false)
@@ -36,8 +47,16 @@ class MainActivity : AppCompatActivity() {
 
         // Create or get existing viewModel
         viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
-        viewModel.host =  sharedPref.getString("server_ip", "192.168.1.100") +
+        viewModel.host = sharedPref.getString("server_ip", "192.168.1.100") +
                 ":" + sharedPref.getString("server_host", "8000")
+
+//        // Set observer for response in ViewModel
+//        viewModel.response.observe(this, Observer { response ->
+//            if (response.first != 200 && !snackbar.isShown) {
+//                snackbar.setText("Error code ${response.first}: ${response.second}")
+//                snackbar.show()
+//            }
+//        })
 
         // Set toolbar as action bar
         setSupportActionBar(findViewById(R.id.toolbar))
@@ -52,7 +71,7 @@ class MainActivity : AppCompatActivity() {
         bottomNavBar.setOnNavigationItemSelectedListener(navigationItemSelectedListener)
 
         // Set preference change listener
-       sharedPref.registerOnSharedPreferenceChangeListener(preferenceChangeListener)
+        sharedPref.registerOnSharedPreferenceChangeListener(preferenceChangeListener)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -119,7 +138,10 @@ class MainActivity : AppCompatActivity() {
         SharedPreferences.OnSharedPreferenceChangeListener { p0, p1 ->
             when (p1) {
                 "server_ip", "server_port" -> viewModel.host =
-                    p0?.getString("server_ip", "192.168.1.100") + ":" + p0?.getString("server_host", "8000")
+                    p0?.getString("server_ip", "192.168.1.100") + ":" + p0?.getString(
+                        "server_host",
+                        "8000"
+                    )
             }
         }
 
