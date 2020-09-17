@@ -7,8 +7,10 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.destack.hwmonitor.MainViewModel
 import com.destack.hwmonitor.R
+import com.destack.hwmonitor.adapters.CPURecyclerViewAdapter
 import com.destack.hwmonitor.databinding.FragmentCpuBinding
 
 class CPUFragment : Fragment() {
@@ -29,6 +31,15 @@ class CPUFragment : Fragment() {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_cpu, container, false)
         binding.lifecycleOwner = viewLifecycleOwner
         binding.viewmodel = viewModel
+
+        // Set up recycler view
+        val customAdapter = CPURecyclerViewAdapter()
+        binding.recyclerView.apply {
+            adapter = customAdapter
+            layoutManager = LinearLayoutManager(context)
+        }
+
+        customAdapter.dataset = listOf(12, 17, 15, 9, 10, 12, 12, 11)
 
         return binding.root
     }

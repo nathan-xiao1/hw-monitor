@@ -7,7 +7,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.destack.hwmonitor.R
 
-class StorageRecyclerViewAdapter(): RecyclerView.Adapter<StorageRecyclerViewAdapter.ViewHolder>() {
+class StorageRecyclerViewAdapter : RecyclerView.Adapter<StorageRecyclerViewAdapter.ViewHolder>() {
 
     var dataset: List<List<String>>? = null
         set(value) {
@@ -15,11 +15,9 @@ class StorageRecyclerViewAdapter(): RecyclerView.Adapter<StorageRecyclerViewAdap
             notifyDataSetChanged()
         }
 
-    // Create new views
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        // create a new view
         val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.storage_item, parent, false)
+            .inflate(R.layout.item_storage, parent, false)
         return ViewHolder(view)
     }
 
