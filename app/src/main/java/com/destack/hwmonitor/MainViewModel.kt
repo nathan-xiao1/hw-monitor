@@ -30,7 +30,7 @@ class MainViewModel : ViewModel() {
 
     /* Private variables */
     // Settings
-    var host: String = "http://192.168.1.100:8000"
+    var host: String = "http://192.168.1.106:8000"
         set(value) {
             field = "http://$value"
         }

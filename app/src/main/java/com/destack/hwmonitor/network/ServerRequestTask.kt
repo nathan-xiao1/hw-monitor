@@ -5,8 +5,11 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import okhttp3.OkHttpClient
 import okhttp3.Request
+import java.net.DatagramPacket
+import java.net.DatagramSocket
 import java.net.SocketTimeoutException
 import java.util.concurrent.TimeUnit
+
 
 val client = OkHttpClient.Builder()
     .connectTimeout(500, TimeUnit.MILLISECONDS)
@@ -32,7 +35,7 @@ suspend fun serverRequest(host: String): Pair<Int, String> {
         } catch (e: IllegalArgumentException) {
             Log.d("ServerRequestTask", "Host Not Found")
             Pair(404, "Host Not Found")
-        } catch (e : SocketTimeoutException) {
+        } catch (e: SocketTimeoutException) {
             Log.d("ServerRequestTask", "Request Timeout")
             Pair(408, "Request Timeout")
         } catch (e: Throwable) {
@@ -41,4 +44,28 @@ suspend fun serverRequest(host: String): Pair<Int, String> {
         }
     }
 }
+
+suspend fun serverRequestUDP(updateCallback: (String) -> Unit) {
+    var buffer = ByteArray(4096)
+    val socket = DatagramSocket(16779)
+    var packet = DatagramPacket(buffer, buffer.size)
+
+    // Set timeout for socket
+    socket.soTimeout = 5000
+
+    try {
+        while (true) {
+            socket.receive(packet)
+            // Update UI with the received data in main thread
+            withContext(Dispatchers.Main) {
+                updateCallback(String(packet.data))
+            }
+        }
+    } catch (e: SocketTimeoutException) {
+        Log.d("Socket","Socket timed out")
+    }
+}
+
+
+
 
