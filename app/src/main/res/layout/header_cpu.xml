@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
         <variable
             name="viewmodel"
             type="com.destack.hwmonitor.MainViewModel" />
@@ -14,7 +14,7 @@
         android:layout_height="match_parent">
 
         <LinearLayout
-            android:id="@+id/linearLayout"
+            android:id="@+id/main_header"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
@@ -39,10 +39,10 @@
                 android:textSize="14sp" />
         </LinearLayout>
 
-
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
             android:orientation="vertical"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent">
@@ -58,88 +58,168 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/header_label"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:orientation="horizontal"
-            app:layout_constraintTop_toBottomOf="@+id/linearLayout">
+            app:layout_constraintTop_toBottomOf="@+id/main_header">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.5"
+                android:textAlignment="center"
+                android:textColor="@color/white"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Current"
+                android:textAlignment="center"
+                android:textColor="@color/grey"
+                android:textSize="8dp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Min"
+                android:textAlignment="center"
+                android:textColor="@color/grey"
+                android:textSize="8dp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Max"
+                android:textAlignment="center"
+                android:textColor="@color/grey"
+                android:textSize="8dp"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/linearLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:orientation="vertical"
+            app:layout_constraintTop_toBottomOf="@+id/header_label">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_weight="1"
+                android:layout_marginBottom="@dimen/cpu_item_margin"
+                android:background="@drawable/rounded_rectangle_primary_light"
                 android:gravity="center"
-                android:padding="5dp"
-                android:layout_marginEnd="@dimen/cpu_item_margin"
-                android:background="@drawable/rounded_rectangle_primary_light">
+                android:orientation="horizontal"
+                android:padding="5dp">
+
+                <ImageView
+                    android:layout_width="0dp"
+                    android:layout_height="20dp"
+                    android:layout_weight="0.5"
+                    android:src="@drawable/ic_microchip_solid"
+                    android:contentDescription="Usage"/>
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:id="@+id/usage_current"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="Temp"
-                    android:textColor="@color/offWhite"
-                    android:textSize="8dp" />
+                    android:layout_weight="1"
+                    android:text="@{Integer.toString(viewmodel.cpuUsagePackage) + `%`}"
+                    android:textAlignment="center"
+                    android:textColor="@color/white" />
+
+                <View
+                    android:layout_width="0.5dp"
+                    android:layout_height="25dp"
+                    android:background="@color/grey" />
 
                 <TextView
-                    android:id="@+id/temperature"
-                    android:layout_width="wrap_content"
+                    android:id="@+id/usage_min"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@{Integer.toString(viewmodel.cpuUsagePackageMin) + `%`}"
+                    android:textAlignment="center"
+                    android:textColor="@color/white" />
+
+                <View
+                    android:layout_width="0.5dp"
+                    android:layout_height="25dp"
+                    android:background="@color/grey" />
+
+                <TextView
+                    android:id="@+id/usage_max"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@{Integer.toString(viewmodel.cpuUsagePackageMax) + `%`}"
+                    android:textAlignment="center"
+                    android:textColor="@color/white" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/rounded_rectangle_primary_light"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:padding="5dp">
+
+                <ImageView
+                    android:layout_width="0dp"
+                    android:layout_height="20dp"
+                    android:layout_weight="0.5"
+                    android:src="@drawable/ic_thermometer_half_solid"
+                    android:contentDescription="Temperature"/>
+
+                <TextView
+                    android:id="@+id/temperature_current"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="0°c"
+                    android:textAlignment="center"
+                    android:textColor="@color/white" />
+
+                <View
+                    android:layout_width="0.5dp"
+                    android:layout_height="25dp"
+                    android:background="@color/grey" />
+
+                <TextView
+                    android:id="@+id/temperature_min"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
                     android:text="32°c"
-                    android:textColor="@color/white"
-                    android:textAlignment="center"/>
-            </LinearLayout>
+                    android:textAlignment="center"
+                    android:textColor="@color/white" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:padding="5dp"
-                android:layout_marginEnd="@dimen/cpu_item_margin"
-                android:background="@drawable/rounded_rectangle_primary_light">
+                <View
+                    android:layout_width="0.5dp"
+                    android:layout_height="25dp"
+                    android:background="@color/grey" />
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:id="@+id/temperature_max"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="Min Usage"
-                    android:textColor="@color/offWhite"
-                    android:textSize="8dp" />
+                    android:layout_weight="1"
+                    android:text="100°c"
+                    android:textAlignment="center"
+                    android:textColor="@color/white" />
 
-                <TextView
-                    android:id="@+id/min_usage"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="0%"
-                    android:textColor="@color/white"
-                    android:textAlignment="center"/>
-            </LinearLayout>
-
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:padding="5dp"
-                android:background="@drawable/rounded_rectangle_primary_light">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Max Usage"
-                    android:textColor="@color/offWhite"
-                    android:textSize="8dp" />
-
-                <TextView
-                    android:id="@+id/max_usage"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="100%"
-                    android:textColor="@color/white"
-                    android:textAlignment="center"/>
             </LinearLayout>
 
         </LinearLayout>

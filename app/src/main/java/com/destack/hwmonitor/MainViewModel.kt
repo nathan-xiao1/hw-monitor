@@ -12,6 +12,9 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.json.JSONException
 import org.json.JSONObject
+import kotlin.math.max
+import kotlin.math.min
+import kotlin.random.Random
 
 class MainViewModel : ViewModel() {
 
@@ -36,10 +39,13 @@ class MainViewModel : ViewModel() {
         }
 
     // Response data
+    private val _error = MutableLiveData<Pair<Boolean, String?>>(Pair(false, null))
     private val _response = MutableLiveData(Pair(200, "No Response"))
 
     // CPU related variables
     private val _cpuUsagePackage = MutableLiveData(0)
+    private val _cpuUsagePackageMin = MutableLiveData(Integer.MAX_VALUE)
+    private val _cpuUsagePackageMax = MutableLiveData(0)
 
     // Memory related variables
     private val _memoryAvailable = MutableLiveData(0.0)
@@ -48,8 +54,11 @@ class MainViewModel : ViewModel() {
     private val _storage_disks: MutableLiveData<List<List<String>>> = MutableLiveData(null)
 
     /* Encapsulation */
+    val error: LiveData<Pair<Boolean, String?>> = _error
     val response: LiveData<Pair<Int, String>> = _response
     val cpuUsagePackage: LiveData<Int> = _cpuUsagePackage
+    val cpuUsagePackageMin: LiveData<Int> = _cpuUsagePackageMin
+    val cpuUsagePackageMax: LiveData<Int> = _cpuUsagePackageMax
     val memoryAvailable: LiveData<Double> = _memoryAvailable
     val storageDisks: LiveData<List<List<String>>> = _storage_disks
 
@@ -66,7 +75,13 @@ class MainViewModel : ViewModel() {
     }
 
     private fun parseJSON(json: JSONObject) {
+
+        // CPU related data
         _cpuUsagePackage.value = json.getInt("cpu_usage_package")
+        _cpuUsagePackageMin.value = min(_cpuUsagePackageMin.value!!, _cpuUsagePackage.value!!)
+        _cpuUsagePackageMax.value = max(_cpuUsagePackageMax.value!!, _cpuUsagePackage.value!!)
+
+        // Memory related data
         _memoryAvailable.value = json.getDouble("memory_available")
 
         // Parse the disk JSON (array of array of string)
@@ -83,6 +98,36 @@ class MainViewModel : ViewModel() {
 
         _storage_disks.value = storageDisksList
         Log.d("ADASDASDASDASDAS", _storage_disks.value.toString())
+    }
+
+    // Model for individual core item on UI
+    class CPUCoreModel(coreNumber: Int) {
+        val coreNumber = coreNumber
+
+        private val _usage = MutableLiveData<Int>(Random.nextInt(0, 100)) // TODO Replace
+        private val _usageMin = MutableLiveData<Int>(Integer.MAX_VALUE)
+        private val _usageMax = MutableLiveData<Int>(0)
+
+        private val _temperature = MutableLiveData<Int>(Random.nextInt(30, 70)) // TODO Replace
+        private val _temperatureMin = MutableLiveData<Int>(Integer.MAX_VALUE)
+        private val _temperatureMax = MutableLiveData<Int>(0)
+
+        val usage: LiveData<Int> = _usage
+        val usageMin: LiveData<Int> = _usageMin
+        val usageMax: LiveData<Int> = _usageMax
+        val temperature: LiveData<Int> = _temperature
+        val temperatureMin: LiveData<Int> = _temperatureMin
+        val temperatureMax: LiveData<Int> = _temperatureMax
+
+        fun update(usage: Int, temperature: Int) {
+            _usage.value = usage
+            _usageMin.value = min(_usageMin.value!!, usage)
+            _usageMax.value = max(_usageMax.value!!, usage)
+            _temperature.value = temperature
+            _temperatureMin.value = min(_temperatureMin.value!!, temperature)
+            _temperatureMax.value = max(_temperatureMax.value!!, temperature)
+        }
+
     }
 
 }

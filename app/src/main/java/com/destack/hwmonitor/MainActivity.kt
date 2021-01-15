@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.preference.PreferenceManager
 import androidx.viewpager2.widget.ViewPager2
@@ -28,7 +29,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var viewPager: ViewPager2
 
     // Snackbar
-    private lateinit var snackbar: Snackbar
+    lateinit var snackbar: Snackbar
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,6 +41,7 @@ class MainActivity : AppCompatActivity() {
             "An error has occurred",
             Snackbar.LENGTH_INDEFINITE
         )
+        snackbar.show()
 
         // Save the default values in shared preferences
         PreferenceManager.setDefaultValues(this, R.xml.preferences, false)
@@ -50,13 +52,15 @@ class MainActivity : AppCompatActivity() {
         viewModel.host = sharedPref.getString("server_ip", "192.168.1.100") +
                 ":" + sharedPref.getString("server_host", "8000")
 
-//        // Set observer for response in ViewModel
-//        viewModel.response.observe(this, Observer { response ->
-//            if (response.first != 200 && !snackbar.isShown) {
-//                snackbar.setText("Error code ${response.first}: ${response.second}")
-//                snackbar.show()
-//            }
-//        })
+        // Set observer for response in ViewModel
+        viewModel.response.observe(this, Observer { response ->
+            if (response.first != 200 && !snackbar.isShown) {
+                snackbar.setText("Error Code ${response.first}: ${response.second}")
+                snackbar.show()
+            } else if (response.first == 200 && snackbar.isShown) {
+                snackbar.dismiss()
+            }
+        })
 
         // Set toolbar as action bar
         setSupportActionBar(findViewById(R.id.toolbar))
