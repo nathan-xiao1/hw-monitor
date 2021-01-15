@@ -39,7 +39,7 @@ class CPUFragment : Fragment() {
             layoutManager = LinearLayoutManager(context)
         }
 
-        customAdapter.dataset = listOf(12, 17, 15, 9, 10, 12, 12, 11)
+        customAdapter.dataset = listOf(12, 17, 15, 9)
 
         return binding.root
     }

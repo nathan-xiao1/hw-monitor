@@ -35,7 +35,7 @@ class CPURecyclerViewAdapter: RecyclerView.Adapter<CPURecyclerViewAdapter.ViewHo
 
         private val cpuNumber = itemView.findViewById<TextView>(R.id.cpu_number_value)
         private val cpuUsage = itemView.findViewById<TextView>(R.id.cpu_usage_value)
-        private val cpuTemperature = itemView.findViewById<TextView>(R.id.cpu_temperature_value)
+        private val cpuTemperature = itemView.findViewById<TextView>(R.id.cpu_temp_current_value)
 
         fun bind(usage: Int, position: Int) {
             cpuNumber.text = itemView.context.getString(R.string.format_cpu_number, position)
