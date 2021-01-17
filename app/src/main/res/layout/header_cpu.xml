@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="viewmodel"
             type="com.destack.hwmonitor.MainViewModel" />
@@ -51,7 +52,7 @@
                 android:id="@+id/package_usage_value"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@{Integer.toString(viewmodel.cpuUsagePackage) + `%`}"
+                android:text="@{viewmodel.cpuUsagePackage != -1 ? @string/format_cpu_usage(viewmodel.cpuUsagePackage) : `N/A`}"
                 android:textColor="@color/white"
                 android:textSize="38sp" />
 
@@ -126,15 +127,15 @@
                     android:layout_width="0dp"
                     android:layout_height="20dp"
                     android:layout_weight="0.5"
-                    android:src="@drawable/ic_microchip_solid"
-                    android:contentDescription="Usage"/>
+                    android:contentDescription="Usage"
+                    android:src="@drawable/ic_microchip_solid" />
 
                 <TextView
                     android:id="@+id/usage_current"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="@{Integer.toString(viewmodel.cpuUsagePackage) + `%`}"
+                    android:text="@{viewmodel.cpuUsagePackage != -1 ? @string/format_cpu_usage(viewmodel.cpuUsagePackage) : `N/A`}"
                     android:textAlignment="center"
                     android:textColor="@color/white" />
 
@@ -148,7 +149,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="@{Integer.toString(viewmodel.cpuUsagePackageMin) + `%`}"
+                    android:text="@{viewmodel.cpuUsagePackageMin != Integer.MAX_VALUE ? @string/format_cpu_usage(viewmodel.cpuUsagePackageMin) : `N/A`}"
                     android:textAlignment="center"
                     android:textColor="@color/white" />
 
@@ -162,7 +163,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="@{Integer.toString(viewmodel.cpuUsagePackageMax) + `%`}"
+                    android:text="@{viewmodel.cpuUsagePackageMax != -1 ? @string/format_cpu_usage(viewmodel.cpuUsagePackageMax) : `N/A`}"
                     android:textAlignment="center"
                     android:textColor="@color/white" />
 
@@ -180,8 +181,8 @@
                     android:layout_width="0dp"
                     android:layout_height="20dp"
                     android:layout_weight="0.5"
-                    android:src="@drawable/ic_thermometer_half_solid"
-                    android:contentDescription="Temperature"/>
+                    android:contentDescription="Temperature"
+                    android:src="@drawable/ic_thermometer_half_solid" />
 
                 <TextView
                     android:id="@+id/temperature_current"

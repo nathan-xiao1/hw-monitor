@@ -31,7 +31,7 @@ class CPURecyclerViewAdapter: RecyclerView.Adapter<CPURecyclerViewAdapter.ViewHo
         holder.bind(dataset.get(position))
     }
 
-    override fun getItemCount() = dataset.size ?: 0
+    override fun getItemCount() = dataset.size
 
     // Custom ViewHolder class
     class ViewHolder(itemCpuBinding: ItemCpuBinding) : RecyclerView.ViewHolder(itemCpuBinding.root) {

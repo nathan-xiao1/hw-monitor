@@ -21,6 +21,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:weightSum="10"
             android:paddingHorizontal="8dp">
 
             <LinearLayout
@@ -35,8 +37,7 @@
                     android:id="@+id/cpu_number_value"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:text="@{`Core #` + viewmodel.coreNumber}"
+                    android:text="@{@string/format_cpu_number(viewmodel.coreNumber)}"
                     android:textColor="@color/colorPrimary"
                     android:textSize="14sp" />
             </LinearLayout>
@@ -44,7 +45,7 @@
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="5"
+                android:layout_weight="6.5"
                 android:gravity="center"
                 android:orientation="vertical"
                 android:padding="5dp">
@@ -66,7 +67,7 @@
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_weight="1.5"
                 android:gravity="center"
                 android:orientation="vertical"
                 android:padding="5dp">
@@ -75,7 +76,7 @@
                     android:id="@+id/cpu_usage_value"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@{Integer.toString(viewmodel.usage) + `%`}"
+                    android:text="@{@string/format_cpu_usage(viewmodel.usage)}"
                     android:textAlignment="center" />
             </LinearLayout>
 
@@ -86,12 +87,13 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:orientation="horizontal"
-            android:paddingHorizontal="8dp">
+            android:paddingHorizontal="8dp"
+            android:weightSum="10">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_weight="5"
                 android:orientation="horizontal">
 
                 <LinearLayout
@@ -113,7 +115,7 @@
                         android:id="@+id/cpu_temp_current_value"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@{Integer.toString(viewmodel.temperature) + `°c`}"
+                        android:text="@{@string/format_cpu_temperature(viewmodel.temperature)}"
                         android:textAlignment="center" />
                 </LinearLayout>
 
@@ -136,7 +138,7 @@
                         android:id="@+id/cpu_temp_min_value"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@{Integer.toString(viewmodel.temperatureMin) + `°c`}"
+                        android:text="@{@string/format_cpu_temperature(viewmodel.temperatureMin)}"
                         android:textAlignment="center" />
                 </LinearLayout>
 
@@ -159,7 +161,7 @@
                         android:id="@+id/cpu_temp_max_value"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@{Integer.toString(viewmodel.temperatureMax) + `°c`}"
+                        android:text="@{@string/format_cpu_temperature(viewmodel.temperatureMax)}"
                         android:textAlignment="center" />
                 </LinearLayout>
 
@@ -173,7 +175,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_weight="5"
                 android:orientation="horizontal">
 
                 <LinearLayout
@@ -195,7 +197,7 @@
                         android:id="@+id/cpu_usage_current_value"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@{Integer.toString(viewmodel.usage) + `%`}"
+                        android:text="@{@string/format_cpu_usage(viewmodel.usage)}"
                         android:textAlignment="center" />
                 </LinearLayout>
 
@@ -218,7 +220,7 @@
                         android:id="@+id/cpu_usage_min_value"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@{Integer.toString(viewmodel.usageMin) + `%`}"
+                        android:text="@{@string/format_cpu_usage(viewmodel.usageMin)}"
                         android:textAlignment="center" />
                 </LinearLayout>
 
@@ -241,7 +243,7 @@
                         android:id="@+id/cpu_usage_max_value"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@{Integer.toString(viewmodel.usageMax) + `%`}"
+                        android:text="@{@string/format_cpu_usage(viewmodel.usageMax)}"
                         android:textAlignment="center" />
                 </LinearLayout>
 

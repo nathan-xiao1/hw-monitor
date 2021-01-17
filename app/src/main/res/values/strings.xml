@@ -13,6 +13,7 @@
     <string name="format_cpu_number">Core #%1$d</string>
     <string name="format_cpu_usage">%1$d%%</string>
     <string name="format_cpu_temperature">%1$d°c</string>
+
     <string name="item_cpu_usage_label">Usage</string>
     <string name="item_cpu_temperature_label">Temperature</string>
 

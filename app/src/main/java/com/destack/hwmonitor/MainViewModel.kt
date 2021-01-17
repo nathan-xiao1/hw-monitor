@@ -43,9 +43,9 @@ class MainViewModel : ViewModel() {
     private val _response = MutableLiveData(Pair(200, "No Response"))
 
     // CPU related variables
-    private val _cpuUsagePackage = MutableLiveData(0)
+    private val _cpuUsagePackage = MutableLiveData(-1)
     private val _cpuUsagePackageMin = MutableLiveData(Integer.MAX_VALUE)
-    private val _cpuUsagePackageMax = MutableLiveData(0)
+    private val _cpuUsagePackageMax = MutableLiveData(-1)
 
     // Memory related variables
     private val _memoryAvailable = MutableLiveData(0.0)
@@ -97,16 +97,16 @@ class MainViewModel : ViewModel() {
         }
 
         _storage_disks.value = storageDisksList
-        Log.d("ADASDASDASDASDAS", _storage_disks.value.toString())
+        Log.d("STORAGE_DEBUG", _storage_disks.value.toString())
     }
 
     // Model for individual core item on UI
     class CPUCoreModel(coreNumber: Int) {
         val coreNumber = coreNumber
 
-        private val _usage = MutableLiveData<Int>(Random.nextInt(0, 100)) // TODO Replace
+        private val _usage = MutableLiveData<Int>(-1)
         private val _usageMin = MutableLiveData<Int>(Integer.MAX_VALUE)
-        private val _usageMax = MutableLiveData<Int>(0)
+        private val _usageMax = MutableLiveData<Int>(-1)
 
         private val _temperature = MutableLiveData<Int>(Random.nextInt(30, 70)) // TODO Replace
         private val _temperatureMin = MutableLiveData<Int>(Integer.MAX_VALUE)
