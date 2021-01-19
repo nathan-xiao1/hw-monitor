@@ -4,7 +4,7 @@
     <data>
         <variable
             name="viewmodel"
-            type="com.destack.hwmonitor.MainViewModel.CPUCoreModel" />
+            type="com.destack.hwmonitor.data.CPUCore" />
     </data>
 
     <LinearLayout

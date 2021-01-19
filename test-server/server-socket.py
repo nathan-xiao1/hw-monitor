@@ -5,7 +5,7 @@ from log import serverLogger, getAdapter
 from hwmonitor import get_data
 
 # Settings
-host = 'localhost'
+host = '127.0.0.1'
 port = 16779
 
 # Create UDP socket
@@ -16,16 +16,16 @@ sock.bind((host, port))
 print('> Server started')
 print('> Server address: {}:{}'.format(host, port))
 
-try:
-    while True:
-        print("Waiting")
-        data, address = sock.recvfrom(128)
-        print(f"Connected: {address}")
-        sock.sendto(b"Hello", address)
-        print("Sent")
-except KeyboardInterrupt:
-    print("Ctrl+C")
-
+while True:
+    print("Waiting")
+    data, address = sock.recvfrom(1024)
+    print(f"Connected: {address}")
+    #sock.sendto(b"HelloBack", address)
+    data = get_data()
+    print(data)
+    sock.sendto(json.dumps(data, separators=(',', ':')).encode('utf-8'), address)
+    print("Sent")
+    
 # Close socket
 sock.close()
 

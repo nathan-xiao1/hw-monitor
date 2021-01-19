@@ -33,13 +33,13 @@ class CPUFragment : Fragment() {
         binding.viewmodel = viewModel
 
         // Set up recycler view
-        val customAdapter = CPURecyclerViewAdapter()
+        val customAdapter = CPURecyclerViewAdapter(viewLifecycleOwner)
         binding.recyclerView.apply {
             adapter = customAdapter
             layoutManager = LinearLayoutManager(context)
         }
 
-        customAdapter.dataset = listOf(MainViewModel.CPUCoreModel(0), MainViewModel.CPUCoreModel(1))
+        customAdapter.dataset = viewModel.hostPC.cpuCores
 
         return binding.root
     }

@@ -7,6 +7,7 @@ import okhttp3.OkHttpClient
 import okhttp3.Request
 import java.net.DatagramPacket
 import java.net.DatagramSocket
+import java.net.InetAddress
 import java.net.SocketTimeoutException
 import java.util.concurrent.TimeUnit
 
@@ -45,25 +46,28 @@ suspend fun serverRequest(host: String): Pair<Int, String> {
     }
 }
 
-suspend fun serverRequestUDP(updateCallback: (String) -> Unit) {
+val socket = DatagramSocket(16771)
+
+suspend fun serverRequestUDP(host: String): Pair<Int, String> {
     var buffer = ByteArray(4096)
-    val socket = DatagramSocket(16779)
-    var packet = DatagramPacket(buffer, buffer.size)
 
     // Set timeout for socket
-    socket.soTimeout = 5000
+    socket.soTimeout = 2000
+
+    val m = "Hello!".toByteArray()
+    val p = DatagramPacket(m, m.size, InetAddress.getByName("10.0.2.2"), 16779)
+    socket.send(p)
+    Log.d("Socket","Sent!")
 
     try {
-        while (true) {
-            socket.receive(packet)
-            // Update UI with the received data in main thread
-            withContext(Dispatchers.Main) {
-                updateCallback(String(packet.data))
-            }
-        }
+        val packet = DatagramPacket(buffer, buffer.size)
+        socket.receive(packet)
+        // Update UI with the received data in main thread
+        return Pair(200, String(packet.data))
     } catch (e: SocketTimeoutException) {
         Log.d("Socket","Socket timed out")
     }
+    return Pair(400, "Timed out")
 }
 
 
