@@ -30,7 +30,7 @@ class CPURecyclerViewAdapter(private val owner: LifecycleOwner): RecyclerView.Ad
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(dataset.get(position))
+        holder.bind(dataset[position])
     }
 
     override fun getItemCount() = dataset.size

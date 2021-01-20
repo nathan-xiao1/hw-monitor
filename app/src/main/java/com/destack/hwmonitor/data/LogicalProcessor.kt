@@ -9,13 +9,13 @@ import kotlin.random.Random
 // Model representing an individual CPU core item on UI
 class LogicalProcessor(val processorID: Int) {
 
-    private val _usage = MutableLiveData<Int>(-1)
-    private val _usageMin = MutableLiveData<Int>(Integer.MAX_VALUE)
-    private val _usageMax = MutableLiveData<Int>(-1)
+    private val _usage = MutableLiveData(-1)
+    private val _usageMin = MutableLiveData(Integer.MAX_VALUE)
+    private val _usageMax = MutableLiveData(-1)
 
-    private val _temperature = MutableLiveData<Int>(Random.nextInt(30, 70)) // TODO Replace
-    private val _temperatureMin = MutableLiveData<Int>(Integer.MAX_VALUE)
-    private val _temperatureMax = MutableLiveData<Int>(0)
+    private val _temperature = MutableLiveData(Random.nextInt(30, 70)) // TODO Replace
+    private val _temperatureMin = MutableLiveData(Integer.MAX_VALUE)
+    private val _temperatureMax = MutableLiveData(0)
 
     val usage: LiveData<Int> = _usage
     val usageMin: LiveData<Int> = _usageMin

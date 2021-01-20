@@ -17,7 +17,7 @@
             android:id="@+id/image_error"
             android:layout_width="82dp"
             android:layout_height="82dp"
-            android:contentDescription="Exclamation Mark"
+            android:contentDescription="@string/description_exclamation_mark"
             android:scaleType="centerInside"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

@@ -16,5 +16,10 @@
 
     <string name="item_cpu_usage_label">Usage</string>
     <string name="item_cpu_temperature_label">Temperature</string>
+    <string name="label_n_a">N/A</string>
+    <string name="label_current">Current</string>
+    <string name="label_min">Min</string>
+    <string name="label_max">Max</string>
+    <string name="description_exclamation_mark">Exclamation Mark</string>
 
 </resources>

@@ -17,7 +17,7 @@ class MainViewModel : ViewModel() {
 
     /* Setting Variables */
     var host: String = "10.0.2.2"
-    var port: Int = 16779
+    private var port: Int = 16779
     private val _ready = MutableLiveData(false)
     var ready: LiveData<Boolean> = _ready
     lateinit var hostPC: Computer

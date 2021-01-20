@@ -25,7 +25,7 @@ class CPUFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         viewModel = ViewModelProvider(requireActivity()).get(MainViewModel::class.java)
 
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_cpu, container, false)

@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.preference.PreferenceManager
@@ -32,7 +31,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var viewPager: ViewPager2
 
     // Snackbar
-    lateinit var snackbar: Snackbar
+    private lateinit var snackbar: Snackbar
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -61,7 +60,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         // Set observer for response in ViewModel
-        viewModel.response.observe(this, Observer { response ->
+        viewModel.response.observe(this, { response ->
             if (response.first != 200 && !snackbar.isShown) {
                 snackbar.setText("Error Code ${response.first}: ${response.second}")
                 snackbar.show()
