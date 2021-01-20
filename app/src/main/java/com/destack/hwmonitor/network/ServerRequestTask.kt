@@ -22,8 +22,7 @@ val client = OkHttpClient.Builder()
  * @param host The host address of the server
  * @return a JSON string of the response
  */
-@Suppress("BlockingMethodInNonBlockingContext")
-suspend fun serverRequest(host: String): Pair<Int, String> {
+suspend fun serverRequestHTTP(host: String): Pair<Int, String> {
     // Move the execution of the coroutine to the I/O dispatcher
     return withContext(Dispatchers.IO) {
         try {
@@ -46,28 +45,36 @@ suspend fun serverRequest(host: String): Pair<Int, String> {
     }
 }
 
-val socket = DatagramSocket(16771)
+class ServerRequest(hostname: String, port: Int, bufSize: Int = 4096) {
 
-suspend fun serverRequestUDP(host: String): Pair<Int, String> {
-    var buffer = ByteArray(4096)
+    private val socket = DatagramSocket()
+    private val buffer = ByteArray(bufSize)
+    private var address = InetAddress.getByName(hostname)
+    var port = port
 
-    // Set timeout for socket
-    socket.soTimeout = 2000
-
-    val m = "Hello!".toByteArray()
-    val p = DatagramPacket(m, m.size, InetAddress.getByName("10.0.2.2"), 16779)
-    socket.send(p)
-    Log.d("Socket","Sent!")
-
-    try {
-        val packet = DatagramPacket(buffer, buffer.size)
-        socket.receive(packet)
-        // Update UI with the received data in main thread
-        return Pair(200, String(packet.data))
-    } catch (e: SocketTimeoutException) {
-        Log.d("Socket","Socket timed out")
+    init {
+        // Set timeout for socket
+        socket.soTimeout = 2000
     }
-    return Pair(400, "Timed out")
+
+    fun request(init: Boolean = false): Pair<Int, String> {
+        // Send request to server
+        val msg = (if (init) "S" else "D").toByteArray()
+        socket.send(DatagramPacket(msg, msg.size, address, port))
+        Log.d("SRT", "Request sent to ${address.hostName}:${port}")
+        return try {
+            val packet = DatagramPacket(buffer, buffer.size)
+            socket.receive(packet)
+            Pair(200, String(packet.data))
+        } catch (e: SocketTimeoutException) {
+            Pair(400, "Request Timed Out")
+        }
+    }
+
+    fun setHost(hostname: String) {
+        this.address = InetAddress.getByName(hostname)
+    }
+
 }
 
 

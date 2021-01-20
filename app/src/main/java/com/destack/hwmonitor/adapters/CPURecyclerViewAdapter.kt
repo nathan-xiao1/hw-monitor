@@ -6,12 +6,12 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.RecyclerView
 import com.destack.hwmonitor.R
-import com.destack.hwmonitor.data.CPUCore
+import com.destack.hwmonitor.data.LogicalProcessor
 import com.destack.hwmonitor.databinding.ItemCpuBinding
 
 class CPURecyclerViewAdapter(private val owner: LifecycleOwner): RecyclerView.Adapter<CPURecyclerViewAdapter.ViewHolder>() {
 
-    var dataset: List<CPUCore> = emptyList()
+    var dataset: List<LogicalProcessor> = emptyList()
         set(value) {
             field = value
             notifyDataSetChanged()
@@ -40,7 +40,7 @@ class CPURecyclerViewAdapter(private val owner: LifecycleOwner): RecyclerView.Ad
 
         private var binding: ItemCpuBinding = itemCpuBinding
 
-        fun bind(model: CPUCore) {
+        fun bind(model: LogicalProcessor) {
             binding.viewmodel = model
         }
     }

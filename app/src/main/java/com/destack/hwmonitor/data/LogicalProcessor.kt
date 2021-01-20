@@ -1,6 +1,5 @@
 package com.destack.hwmonitor.data
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import kotlin.math.max
@@ -8,7 +7,7 @@ import kotlin.math.min
 import kotlin.random.Random
 
 // Model representing an individual CPU core item on UI
-class CPUCore(val coreNumber: Int) {
+class LogicalProcessor(val processorID: Int) {
 
     private val _usage = MutableLiveData<Int>(-1)
     private val _usageMin = MutableLiveData<Int>(Integer.MAX_VALUE)
@@ -26,9 +25,7 @@ class CPUCore(val coreNumber: Int) {
     val temperatureMax: LiveData<Int> = _temperatureMax
 
     fun update(usage: Int, temperature: Int) {
-        Log.d("CPUCore", "Updating $coreNumber with usage $usage%")
         _usage.postValue(usage)
-        Log.d("CPUCORE", "CORE $coreNumber: $usage%")
         _usageMin.postValue(min(_usageMin.value!!, usage))
         _usageMax.postValue(max(_usageMax.value!!, usage))
         _temperature.postValue(temperature)

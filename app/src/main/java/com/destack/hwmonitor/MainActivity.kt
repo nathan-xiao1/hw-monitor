@@ -8,6 +8,7 @@ import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.preference.PreferenceManager
 import androidx.viewpager2.widget.ViewPager2
 import com.destack.hwmonitor.adapters.CPU_ITEM
@@ -16,6 +17,8 @@ import com.destack.hwmonitor.adapters.MEMORY_ITEM
 import com.destack.hwmonitor.adapters.STORAGE_ITEM
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.snackbar.Snackbar
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 
 class MainActivity : AppCompatActivity() {
@@ -51,6 +54,11 @@ class MainActivity : AppCompatActivity() {
         viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
         viewModel.host = sharedPref.getString("server_ip", "192.168.1.100") +
                 ":" + sharedPref.getString("server_host", "8000")
+
+        // Start requesting data from server
+        lifecycleScope.launch(Dispatchers.IO) {
+            viewModel.startRequest()
+        }
 
         // Set observer for response in ViewModel
         viewModel.response.observe(this, Observer { response ->

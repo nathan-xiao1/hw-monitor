@@ -30,9 +30,8 @@ _info_map = {
 def get_static_info():
     return _static_info
 
-def get_data():
+def get_dynamic_info():
     export_dict = {}
     for key, value in _info_map.items():
         export_dict[key] = value()
-    export_dict.update(_static_info)
     return export_dict

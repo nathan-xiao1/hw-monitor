@@ -20,7 +20,6 @@ class StorageFragment : Fragment() {
     }
 
     private lateinit var viewModel: MainViewModel
-    val data = arrayOf(arrayOf("C:/"), arrayOf("D:/"))
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -38,10 +37,16 @@ class StorageFragment : Fragment() {
             layoutManager = LinearLayoutManager(context)
         }
 
-        // Observer for data change in disks
-        viewModel.storageDisks.observe(viewLifecycleOwner, Observer { it?.let {
-            customAdapter.dataset = it
-        }})
+        viewModel.ready.observe(viewLifecycleOwner, { ready ->
+            if (ready) {
+                // Set observer for data change in disks
+                viewModel.hostPC.storageDisks.observe(viewLifecycleOwner, Observer {
+                    it?.let {
+                        customAdapter.dataset = it
+                    }
+                })
+            }
+        })
 
         return view
     }

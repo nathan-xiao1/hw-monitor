@@ -2,98 +2,88 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android">
 
     <data>
+
         <variable
             name="viewmodel"
-            type="com.destack.hwmonitor.data.CPUCore" />
+            type="com.destack.hwmonitor.data.LogicalProcessor" />
     </data>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginVertical="8dp"
         android:layout_marginHorizontal="6dp"
-        android:elevation="2dp"
+        android:layout_marginVertical="8dp"
         android:background="@drawable/rounded_rectangle_white"
-        android:padding="2px"
-        android:orientation="vertical">
+        android:elevation="2dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:padding="2dp"
+        android:paddingHorizontal="8dp"
+        android:weightSum="10">
 
         <LinearLayout
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center_vertical"
-            android:weightSum="10"
-            android:paddingHorizontal="8dp">
+            android:layout_weight="1.5"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:padding="5dp">
 
-            <LinearLayout
-                android:layout_width="0dp"
+            <TextView
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="2"
-                android:gravity="center"
-                android:orientation="vertical"
-                android:padding="5dp">
+                android:text="Logical Core"
+                android:textAlignment="center"
+                android:textColor="@color/greyHint"
+                android:textSize="8sp" />
 
-                <TextView
-                    android:id="@+id/cpu_number_value"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@{@string/format_cpu_number(viewmodel.coreNumber)}"
-                    android:textColor="@color/colorPrimary"
-                    android:textSize="14sp" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="6.5"
-                android:gravity="center"
-                android:orientation="vertical"
-                android:padding="5dp">
-
-                <ProgressBar
-                    android:id="@+id/cpu_usage_bar"
-                    style="?android:attr/progressBarStyleHorizontal"
-                    android:progressTint="@color/colorPrimary"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="-4dp"
-                    android:layout_marginBottom="-8dp"
-                    android:indeterminate="false"
-                    android:max="100"
-                    android:progress="@{viewmodel.usage}"
-                    android:scaleY="3" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="0dp"
+            <TextView
+                android:id="@+id/id_text"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1.5"
-                android:gravity="center"
-                android:orientation="vertical"
-                android:padding="5dp">
-
-                <TextView
-                    android:id="@+id/cpu_usage_value"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@{@string/format_cpu_usage(viewmodel.usage)}"
-                    android:textAlignment="center" />
-            </LinearLayout>
+                android:text="@{@string/format_cpu_number(viewmodel.processorID)}"
+                android:textAlignment="center"
+                android:textColor="@color/colorPrimary" />
 
         </LinearLayout>
 
         <LinearLayout
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="4"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:padding="5dp">
+
+            <ProgressBar
+                android:id="@+id/cpu_usage_bar"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="-4dp"
+                android:layout_marginBottom="-8dp"
+                android:indeterminate="false"
+                android:max="100"
+                android:progress="@{viewmodel.usage}"
+                android:progressTint="@color/colorPrimary"
+                android:scaleY="3" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/stat_detail"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_weight="4.5"
+            android:baselineAligned="false"
             android:gravity="center"
             android:orientation="horizontal"
-            android:paddingHorizontal="8dp"
             android:weightSum="10">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="5"
+                android:gravity="center"
                 android:orientation="horizontal">
 
                 <LinearLayout
@@ -109,89 +99,8 @@
                         android:layout_height="wrap_content"
                         android:text="Current"
                         android:textAlignment="center"
-                        android:textSize="8dp" />
-
-                    <TextView
-                        android:id="@+id/cpu_temp_current_value"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@{@string/format_cpu_temperature(viewmodel.temperature)}"
-                        android:textAlignment="center" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:orientation="vertical"
-                    android:padding="5dp">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Min"
-                        android:textAlignment="center"
-                        android:textSize="8dp" />
-
-                    <TextView
-                        android:id="@+id/cpu_temp_min_value"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@{@string/format_cpu_temperature(viewmodel.temperatureMin)}"
-                        android:textAlignment="center" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:orientation="vertical"
-                    android:padding="5dp">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Max"
-                        android:textAlignment="center"
-                        android:textSize="8dp" />
-
-                    <TextView
-                        android:id="@+id/cpu_temp_max_value"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@{@string/format_cpu_temperature(viewmodel.temperatureMax)}"
-                        android:textAlignment="center" />
-                </LinearLayout>
-
-            </LinearLayout>
-
-            <View
-                android:layout_width="0.5dp"
-                android:layout_height="25dp"
-                android:background="@color/grey" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="5"
-                android:orientation="horizontal">
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:orientation="vertical"
-                    android:padding="5dp">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Current"
-                        android:textAlignment="center"
-                        android:textSize="8dp" />
+                        android:textColor="@color/greyHint"
+                        android:textSize="8sp" />
 
                     <TextView
                         android:id="@+id/cpu_usage_current_value"
@@ -199,7 +108,13 @@
                         android:layout_height="wrap_content"
                         android:text="@{@string/format_cpu_usage(viewmodel.usage)}"
                         android:textAlignment="center" />
+
                 </LinearLayout>
+
+                <View
+                    android:layout_width="0.5dp"
+                    android:layout_height="25dp"
+                    android:background="@color/grey" />
 
                 <LinearLayout
                     android:layout_width="0dp"
@@ -214,7 +129,8 @@
                         android:layout_height="wrap_content"
                         android:text="Min"
                         android:textAlignment="center"
-                        android:textSize="8dp" />
+                        android:textColor="@color/greyHint"
+                        android:textSize="8sp" />
 
                     <TextView
                         android:id="@+id/cpu_usage_min_value"
@@ -224,6 +140,11 @@
                         android:textAlignment="center" />
                 </LinearLayout>
 
+                <View
+                    android:layout_width="0.5dp"
+                    android:layout_height="25dp"
+                    android:background="@color/grey" />
+
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -237,7 +158,8 @@
                         android:layout_height="wrap_content"
                         android:text="Max"
                         android:textAlignment="center"
-                        android:textSize="8dp" />
+                        android:textColor="@color/greyHint"
+                        android:textSize="8sp" />
 
                     <TextView
                         android:id="@+id/cpu_usage_max_value"
@@ -251,6 +173,6 @@
 
         </LinearLayout>
 
-
     </LinearLayout>
+
 </layout>

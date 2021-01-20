@@ -26,9 +26,16 @@ class MemoryFragment : Fragment() {
     ): View? {
         viewModel = ViewModelProvider(requireActivity()).get(MainViewModel::class.java)
 
+        // Inflate binding layout
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_memory, container, false)
         binding.lifecycleOwner = viewLifecycleOwner
-        binding.viewmodel = viewModel
+
+        // Bind 'Computer' model to UI when ready
+        viewModel.ready.observe(viewLifecycleOwner, { ready ->
+            if (ready) {
+                binding.computer = viewModel.hostPC
+            }
+        })
 
         return binding.root
     }

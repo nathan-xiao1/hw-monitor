@@ -30,7 +30,6 @@ class CPUFragment : Fragment() {
 
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_cpu, container, false)
         binding.lifecycleOwner = viewLifecycleOwner
-        binding.viewmodel = viewModel
 
         // Set up recycler view
         val customAdapter = CPURecyclerViewAdapter(viewLifecycleOwner)
@@ -39,7 +38,15 @@ class CPUFragment : Fragment() {
             layoutManager = LinearLayoutManager(context)
         }
 
-        customAdapter.dataset = viewModel.hostPC.cpuCores
+        // Bind viewModel to UI when viewModel is ready
+        viewModel.ready.observe(viewLifecycleOwner, { ready ->
+            if (ready) {
+                binding.layoutError.visibility = View.GONE
+                binding.recyclerView.visibility = View.VISIBLE
+                binding.viewmodel = viewModel
+                customAdapter.dataset = viewModel.hostPC.logicalProcessors
+            }
+        })
 
         return binding.root
     }
