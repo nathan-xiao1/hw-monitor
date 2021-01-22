@@ -9,7 +9,10 @@ def _byteToMB(byte):
 # Store information that are static
 _, cpu_freq_min, cpu_freq_max = psutil.cpu_freq()
 memory_total = math.ceil(_byteToMB(psutil.virtual_memory().total))
-disk_partitions = psutil.disk_partitions()
+disk_partitions = [{"device": disk.device, 
+                    "fstype": disk.fstype, 
+                    "mountpoint": disk.mountpoint,
+                    "capacity": psutil.disk_usage(disk.mountpoint).total} for disk in psutil.disk_partitions()]
 
 _static_info = {
     "cpu_count": psutil.cpu_count(),
@@ -23,7 +26,8 @@ _static_info = {
 _info_map = {
     "cpu_usage_package": partial(psutil.cpu_percent, interval=None),
     "cpu_usage_percpu": partial(psutil.cpu_percent, interval=None, percpu=True),
-    "memory_available": lambda : _byteToMB(psutil.virtual_memory().available)
+    "memory_available": lambda : _byteToMB(psutil.virtual_memory().available),
+    "disk_usages": lambda: [psutil.disk_usage(disk["mountpoint"]).used for disk in disk_partitions]
 }
 
 
@@ -35,3 +39,6 @@ def get_dynamic_info():
     for key, value in _info_map.items():
         export_dict[key] = value()
     return export_dict
+
+# print(get_static_info())
+# print(get_dynamic_info())

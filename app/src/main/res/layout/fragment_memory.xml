@@ -47,6 +47,15 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/textview_memory_available" />
 
+        <TextView
+            android:id="@+id/memory_total"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{Integer.toString(computer.memoryTotal)}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textview_debug" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </layout>

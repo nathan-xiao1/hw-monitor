@@ -1,59 +1,167 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical">
+    xmlns:tools="http://schemas.android.com/tools">
 
-<!--     app:strokeWidth="1dp"-->
+    <data>
+
+        <import type="com.destack.hwmonitor.util.ByteToHumanKt" />
+
+        <variable
+            name="disk"
+            type="com.destack.hwmonitor.data.StorageDisk" />
+    </data>
+
     <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
-        app:strokeColor="#000"
+        app:cardCornerRadius="4dp"
         app:cardElevation="1dp"
-        app:cardCornerRadius="4dp">
+        app:contentPadding="8dp"
+        app:strokeColor="@color/white">
 
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/wrapper"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="16dp">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center">
-
-                <TextView
-                    android:id="@+id/disk_label"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:textAppearance="?attr/textAppearanceHeadline6" />
-
-                <ProgressBar
-                    android:id="@+id/disk_usage_bar"
-                    style="?android:attr/progressBarStyleHorizontal"
-                    android:layout_width="0dp"
-                    android:layout_weight="5"
-                    android:layout_height="wrap_content"
-                    android:max="100"
-                    android:progress="25"
-                    android:scaleY="3" />
-
-            </LinearLayout>
+            android:layout_height="wrap_content">
 
             <TextView
-                android:id="@+id/disk_sublabel"
-                android:layout_width="match_parent"
+                android:id="@+id/label_disk_name"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:textAppearance="?attr/textAppearanceBody2"
-                android:textColor="?android:attr/textColorSecondary" />
+                android:layout_marginEnd="8dp"
+                android:gravity="center"
+                android:text="@{disk.label}"
+                android:textColor="@color/colorPrimary"
+                android:textSize="21sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toStartOf="@+id/progress_usage"
+                app:layout_constraintHorizontal_weight="1"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="C:\" />
 
-        </LinearLayout>
+            <ProgressBar
+                android:id="@+id/progress_usage"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:max="100"
+                android:progress="@{disk.usage}"
+                android:progressTint="@{(disk.usage &lt; disk.THRESHOLD) ? @color/colorPrimary : @color/critical}"
+                android:scaleY="3"
+                app:layout_constraintBottom_toBottomOf="@+id/label_disk_name"
+                app:layout_constraintEnd_toStartOf="@+id/label_usage"
+                app:layout_constraintHorizontal_weight="8"
+                app:layout_constraintStart_toEndOf="@+id/label_disk_name"
+                app:layout_constraintTop_toTopOf="@+id/label_disk_name" />
+
+            <TextView
+                android:id="@+id/label_usage"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:paddingLeft="8dp"
+                android:text="@{@string/format_cpu_usage(disk.usage)}"
+                app:layout_constraintBottom_toBottomOf="@+id/progress_usage"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_weight="1"
+                app:layout_constraintStart_toEndOf="@+id/progress_usage"
+                app:layout_constraintTop_toTopOf="@+id/progress_usage"
+                tools:text="56%" />
+
+            <TextView
+                android:id="@+id/label_used"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/label_free"
+                android:textColor="@color/greyDarker"
+                android:textSize="8sp"
+                app:layout_constraintEnd_toStartOf="@+id/label_free"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/label_disk_name" />
+
+            <View
+                android:id="@+id/view"
+                style="@style/Divider"
+                app:layout_constraintBottom_toBottomOf="@+id/value_free"
+                app:layout_constraintEnd_toStartOf="@+id/value_used"
+                app:layout_constraintStart_toEndOf="@+id/value_free"
+                app:layout_constraintTop_toTopOf="@+id/label_used" />
+
+            <TextView
+                android:id="@+id/label_free"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/label_used"
+                android:textColor="@color/greyDarker"
+                android:textSize="8sp"
+                app:layout_constraintEnd_toStartOf="@+id/label_misc"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/label_used"
+                app:layout_constraintTop_toTopOf="@+id/label_used" />
+
+            <View
+                style="@style/Divider"
+                app:layout_constraintBottom_toBottomOf="@+id/value_used"
+                app:layout_constraintEnd_toStartOf="@+id/value_misc"
+                app:layout_constraintStart_toEndOf="@+id/value_used"
+                app:layout_constraintTop_toTopOf="@+id/label_free" />
+
+            <TextView
+                android:id="@+id/label_misc"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="Misc"
+                android:textColor="@color/greyDarker"
+                android:textSize="8sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/label_free"
+                app:layout_constraintTop_toTopOf="@+id/label_used" />
+
+            <TextView
+                android:id="@+id/value_free"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@{ByteToHumanKt.byteToHuman(disk.capacity - disk.used)}"
+                app:layout_constraintEnd_toStartOf="@+id/value_used"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/label_used"
+                tools:text="100GiB" />
+
+            <TextView
+                android:id="@+id/value_used"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@{ByteToHumanKt.byteToHuman(disk.used)}"
+                app:layout_constraintEnd_toStartOf="@+id/value_misc"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/value_free"
+                app:layout_constraintTop_toTopOf="@+id/value_free"
+                tools:text="250GiB" />
+
+            <TextView
+                android:id="@+id/value_misc"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@{disk.fstype}"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/value_used"
+                app:layout_constraintTop_toTopOf="@+id/value_free" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </com.google.android.material.card.MaterialCardView>
 
-</LinearLayout>
+</layout>

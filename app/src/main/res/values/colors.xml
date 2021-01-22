@@ -9,5 +9,7 @@
     <color name="white">#FFF</color>
     <color name="offWhite">#FAFAFA</color>
     <color name="grey">#BDBDBD</color>
-    <color name="greyHint">#9E9E9E</color>
+    <color name="greyLighter">#DFDFDF</color>
+    <color name="greyDarker">#9E9E9E</color>
+    <color name="critical">#E84747</color>
 </resources>

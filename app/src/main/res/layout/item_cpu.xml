@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
@@ -33,9 +35,9 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Logical Core"
+                android:text="@string/label_logical_processor"
                 android:textAlignment="center"
-                android:textColor="@color/greyHint"
+                android:textColor="@color/greyDarker"
                 android:textSize="8sp" />
 
             <TextView
@@ -44,7 +46,8 @@
                 android:layout_height="wrap_content"
                 android:text="@{@string/format_cpu_number(viewmodel.processorID)}"
                 android:textAlignment="center"
-                android:textColor="@color/colorPrimary" />
+                android:textColor="@color/colorPrimary"
+                tools:text="#1" />
 
         </LinearLayout>
 
@@ -71,7 +74,7 @@
 
         </LinearLayout>
 
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/stat_detail"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -80,90 +83,98 @@
             android:gravity="center"
             android:orientation="horizontal">
 
-            <LinearLayout
+            <TextView
+                android:id="@+id/label_current"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:orientation="vertical"
-                android:padding="5dp">
+                android:text="@string/label_current"
+                android:textAlignment="center"
+                android:textColor="@color/greyDarker"
+                android:textSize="8sp"
+                app:layout_constraintEnd_toStartOf="@+id/label_min"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintHorizontal_chainStyle="spread"
+                app:layout_constraintStart_toEndOf="@+id/cpu_usage_max_value"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/label_current"
-                    android:textAlignment="center"
-                    android:textColor="@color/greyHint"
-                    android:textSize="8sp" />
-
-                <TextView
-                    android:id="@+id/cpu_usage_current_value"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@{@string/format_cpu_usage(viewmodel.usage)}"
-                    android:textAlignment="center" />
-
-            </LinearLayout>
+            <TextView
+                android:id="@+id/cpu_usage_current_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{@string/format_cpu_usage(viewmodel.usage)}"
+                android:textAlignment="center"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/label_current"
+                app:layout_constraintStart_toStartOf="@+id/label_current"
+                app:layout_constraintTop_toBottomOf="@+id/label_current"
+                tools:text="0%" />
 
             <View
-                android:layout_width="0.5dp"
-                android:layout_height="25dp"
-                android:background="@color/grey" />
+                style="@style/Divider"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/label_min"
+                app:layout_constraintStart_toEndOf="@+id/label_current"
+                app:layout_constraintTop_toTopOf="parent" />
 
-            <LinearLayout
+            <TextView
+                android:id="@+id/label_min"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:orientation="vertical"
-                android:padding="5dp">
+                android:text="@string/label_min"
+                android:textAlignment="center"
+                android:textColor="@color/greyDarker"
+                android:textSize="8sp"
+                app:layout_constraintEnd_toStartOf="@+id/label_max"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/label_current"
+                app:layout_constraintTop_toTopOf="parent" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/label_min"
-                    android:textAlignment="center"
-                    android:textColor="@color/greyHint"
-                    android:textSize="8sp" />
-
-                <TextView
-                    android:id="@+id/cpu_usage_min_value"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@{@string/format_cpu_usage(viewmodel.usageMin)}"
-                    android:textAlignment="center" />
-            </LinearLayout>
+            <TextView
+                android:id="@+id/cpu_usage_min_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{@string/format_cpu_usage(viewmodel.usageMin)}"
+                android:textAlignment="center"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/label_min"
+                app:layout_constraintStart_toStartOf="@+id/label_min"
+                app:layout_constraintTop_toBottomOf="@+id/label_min"
+                tools:text="0%" />
 
             <View
-                android:layout_width="0.5dp"
-                android:layout_height="25dp"
-                android:background="@color/grey" />
+                style="@style/Divider"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/label_min"
+                app:layout_constraintStart_toEndOf="@+id/label_min"
+                app:layout_constraintTop_toTopOf="parent" />
 
-            <LinearLayout
+            <TextView
+                android:id="@+id/label_max"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:orientation="vertical"
-                android:padding="5dp">
+                android:text="@string/label_max"
+                android:textAlignment="center"
+                android:textColor="@color/greyDarker"
+                android:textSize="8sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/label_min"
+                app:layout_constraintTop_toTopOf="parent" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/label_max"
-                    android:textAlignment="center"
-                    android:textColor="@color/greyHint"
-                    android:textSize="8sp" />
+            <TextView
+                android:id="@+id/cpu_usage_max_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{@string/format_cpu_usage(viewmodel.usageMax)}"
+                android:textAlignment="center"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/label_max"
+                app:layout_constraintStart_toStartOf="@+id/label_max"
+                app:layout_constraintTop_toBottomOf="@+id/label_max"
+                tools:text="100%" />
 
-                <TextView
-                    android:id="@+id/cpu_usage_max_value"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@{@string/format_cpu_usage(viewmodel.usageMax)}"
-                    android:textAlignment="center" />
-            </LinearLayout>
-
-        </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </LinearLayout>
 

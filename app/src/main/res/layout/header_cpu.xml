@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
@@ -36,7 +37,8 @@
                 android:layout_height="wrap_content"
                 android:text="Intel Core i7 8700k"
                 android:textColor="@color/white"
-                android:textSize="14sp" />
+                android:textSize="14sp"
+                tools:text="Intel Core i7 8700k" />
         </LinearLayout>
 
         <LinearLayout
@@ -126,7 +128,7 @@
                     android:layout_width="0dp"
                     android:layout_height="20dp"
                     android:layout_weight="0.5"
-                    android:contentDescription="Usage"
+                    android:contentDescription="@string/description_usage"
                     android:src="@drawable/ic_microchip_solid" />
 
                 <TextView
@@ -136,7 +138,8 @@
                     android:layout_weight="1"
                     android:text="@{computer.cpuUsagePackage == null ? `N/A` : @string/format_cpu_usage(computer.cpuUsagePackage)}"
                     android:textAlignment="center"
-                    android:textColor="@color/white" />
+                    android:textColor="@color/white"
+                    tools:text="0%" />
 
                 <View
                     android:layout_width="0.5dp"
@@ -150,7 +153,8 @@
                     android:layout_weight="1"
                     android:text="@{computer.cpuUsagePackageMin == null ? `N/A` : @string/format_cpu_usage(computer.cpuUsagePackageMin)}"
                     android:textAlignment="center"
-                    android:textColor="@color/white" />
+                    android:textColor="@color/white"
+                    tools:text="0%" />
 
                 <View
                     android:layout_width="0.5dp"
@@ -164,7 +168,8 @@
                     android:layout_weight="1"
                     android:text="@{computer.cpuUsagePackageMax == null ? `N/A` : @string/format_cpu_usage(computer.cpuUsagePackageMax)}"
                     android:textAlignment="center"
-                    android:textColor="@color/white" />
+                    android:textColor="@color/white"
+                    tools:text="100%" />
 
             </LinearLayout>
 
@@ -180,7 +185,7 @@
                     android:layout_width="0dp"
                     android:layout_height="20dp"
                     android:layout_weight="0.5"
-                    android:contentDescription="Temperature"
+                    android:contentDescription="@string/description_temperature"
                     android:src="@drawable/ic_thermometer_half_solid" />
 
                 <TextView

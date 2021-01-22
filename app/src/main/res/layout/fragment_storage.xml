@@ -4,8 +4,8 @@
     <data>
 
         <variable
-            name="viewmodel"
-            type="com.destack.hwmonitor.MainViewModel" />
+            name="computer"
+            type="com.destack.hwmonitor.data.Computer" />
     </data>
 
     <androidx.recyclerview.widget.RecyclerView

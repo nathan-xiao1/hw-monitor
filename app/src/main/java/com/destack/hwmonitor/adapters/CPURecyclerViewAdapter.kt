@@ -2,14 +2,13 @@ package com.destack.hwmonitor.adapters
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.RecyclerView
-import com.destack.hwmonitor.R
 import com.destack.hwmonitor.data.LogicalProcessor
 import com.destack.hwmonitor.databinding.ItemCpuBinding
 
-class CPURecyclerViewAdapter(private val owner: LifecycleOwner): RecyclerView.Adapter<CPURecyclerViewAdapter.ViewHolder>() {
+class CPURecyclerViewAdapter(private val owner: LifecycleOwner) :
+    RecyclerView.Adapter<CPURecyclerViewAdapter.ViewHolder>() {
 
     var dataset: List<LogicalProcessor> = emptyList()
         set(value) {
@@ -17,14 +16,9 @@ class CPURecyclerViewAdapter(private val owner: LifecycleOwner): RecyclerView.Ad
             notifyDataSetChanged()
         }
 
-    override fun onCreateViewHolder(
-        parent: ViewGroup,
-        viewType: Int
-    ): ViewHolder {
-//        val view = LayoutInflater.from(parent.context)
-//            .inflate(R.layout.item_cpu, parent, false)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val layoutInflate = LayoutInflater.from(parent.context)
-        val binding = DataBindingUtil.inflate<ItemCpuBinding>(layoutInflate, R.layout.item_cpu, parent, false)
+        val binding = ItemCpuBinding.inflate(layoutInflate, parent, false)
         binding.lifecycleOwner = owner
         return ViewHolder(binding)
     }
@@ -36,10 +30,7 @@ class CPURecyclerViewAdapter(private val owner: LifecycleOwner): RecyclerView.Ad
     override fun getItemCount() = dataset.size
 
     // Custom ViewHolder class
-    class ViewHolder(itemCpuBinding: ItemCpuBinding) : RecyclerView.ViewHolder(itemCpuBinding.root) {
-
-        private var binding: ItemCpuBinding = itemCpuBinding
-
+    class ViewHolder(private var binding: ItemCpuBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(model: LogicalProcessor) {
             binding.viewmodel = model
         }

@@ -6,7 +6,7 @@ import org.json.JSONObject
 import kotlin.math.max
 import kotlin.math.min
 
-class Computer(coreCounts: Int) {
+class Computer(coreCounts: Int, memoryTotal: Int, private val disks: List<StorageDisk>) {
 
     // CPU related
     val logicalProcessors: List<LogicalProcessor> = List(coreCounts) { LogicalProcessor(it) }
@@ -16,16 +16,17 @@ class Computer(coreCounts: Int) {
 
     // Memory related variables
     private val _memoryAvailable = MutableLiveData(0.0)
+    val memoryTotal = memoryTotal
 
     // Storage related variables
-    private val _storageDisks: MutableLiveData<List<List<String>>> = MutableLiveData(null)
+    private val _storageDisks: MutableLiveData<List<StorageDisk>> = MutableLiveData(disks)
 
     /* Encapsulation */
     val cpuUsagePackage: LiveData<Int> = _cpuUsagePackage
     val cpuUsagePackageMin: LiveData<Int> = _cpuUsagePackageMin
     val cpuUsagePackageMax: LiveData<Int> = _cpuUsagePackageMax
     val memoryAvailable: LiveData<Double> = _memoryAvailable
-    val storageDisks: LiveData<List<List<String>>> = _storageDisks
+    val storageDisks: LiveData<List<StorageDisk>> = _storageDisks
 
     fun update(json: JSONObject) {
         // CPU related data
@@ -43,18 +44,13 @@ class Computer(coreCounts: Int) {
         // Memory related data
         _memoryAvailable.postValue(json.getDouble("memory_available"))
 
-//        // Parse the disk JSON (array of array of string)
-//        val disks = json.getJSONArray("disk_partitions")
-//        val storageDisksList = ArrayList<ArrayList<String>>()
-//        for (disk in 0 until disks.length()) {
-//            val diskInfo = ArrayList<String>()
-//            val diskInfoJSON = disks.getJSONArray(disk)
-//            for (info in 0 until diskInfoJSON.length()) {
-//                diskInfo.add(diskInfoJSON.getString(info))
-//            }
-//            storageDisksList.add(diskInfo)
-//        }
-//        _storageDisks.postValue(storageDisksList)
+        // Storage related data
+        val diskUsages = json.getJSONArray("disk_usages")
+        for (index in 0 until diskUsages.length()) {
+            val usage = diskUsages.getLong(index)
+            disks[index].update(usage)
+            _storageDisks.postValue(disks)
+        }
     }
 
 }

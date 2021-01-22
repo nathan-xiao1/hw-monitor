@@ -1,44 +1,39 @@
 package com.destack.hwmonitor.adapters
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
+import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.RecyclerView
-import com.destack.hwmonitor.R
+import com.destack.hwmonitor.data.StorageDisk
+import com.destack.hwmonitor.databinding.ItemStorageBinding
 
-class StorageRecyclerViewAdapter : RecyclerView.Adapter<StorageRecyclerViewAdapter.ViewHolder>() {
+class StorageRecyclerViewAdapter(private val owner: LifecycleOwner) :
+    RecyclerView.Adapter<StorageRecyclerViewAdapter.ViewHolder>() {
 
-    var dataset: List<List<String>>? = null
+    var dataset: List<StorageDisk> = emptyList()
         set(value) {
             field = value
             notifyDataSetChanged()
         }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.item_storage, parent, false)
-        return ViewHolder(view)
+        val layoutInflate = LayoutInflater.from(parent.context)
+        val binding = ItemStorageBinding.inflate(layoutInflate, parent, false)
+        binding.lifecycleOwner = owner
+        return ViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(dataset?.get(position))
+        holder.bind(dataset[position])
     }
 
-    override fun getItemCount() = dataset?.size ?: 1
+    override fun getItemCount() = dataset.size
 
     // Custom ViewHolder class
-    class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-
-        private val diskLabel = itemView.findViewById<TextView>(R.id.disk_label)
-        private val diskSublabel =itemView.findViewById<TextView>(R.id.disk_sublabel)
-
-        fun bind(data: List<String>?) {
-            if (data != null) {
-                diskLabel.text = data[0]
-                diskSublabel.text = "${data[2]} - ${data[3]}"
-            }
+    class ViewHolder(private val binding: ItemStorageBinding) :
+        RecyclerView.ViewHolder(binding.root) {
+        fun bind(model: StorageDisk) {
+            binding.disk = model
         }
-
     }
 }

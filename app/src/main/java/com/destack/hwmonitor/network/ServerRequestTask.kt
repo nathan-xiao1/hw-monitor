@@ -6,6 +6,8 @@ import java.net.DatagramSocket
 import java.net.InetAddress
 import java.net.SocketTimeoutException
 
+const val TIMEOUT_MS = 2000
+
 class ServerRequest(hostname: String, private var port: Int, bufSize: Int = 4096) {
 
     private val socket = DatagramSocket()
@@ -14,7 +16,7 @@ class ServerRequest(hostname: String, private var port: Int, bufSize: Int = 4096
 
     init {
         // Set timeout for socket
-        socket.soTimeout = 2000
+        socket.soTimeout = TIMEOUT_MS
     }
 
     fun request(init: Boolean = false): Pair<Int, String> {

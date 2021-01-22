@@ -30,7 +30,7 @@ class StorageFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_storage, container, false)
 
         // Set adapter for RecyclerView
-        val customAdapter = StorageRecyclerViewAdapter()
+        val customAdapter = StorageRecyclerViewAdapter(viewLifecycleOwner)
         view.findViewById<RecyclerView>(R.id.recycler_view).apply {
             adapter = customAdapter
             layoutManager = LinearLayoutManager(context)

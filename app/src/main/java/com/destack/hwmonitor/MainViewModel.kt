@@ -1,14 +1,15 @@
 package com.destack.hwmonitor
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.destack.hwmonitor.data.Computer
+import com.destack.hwmonitor.data.StorageDisk
 import com.destack.hwmonitor.network.ServerRequest
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
-import org.json.JSONException
 import org.json.JSONObject
 
 const val RETRY_DELAY_MS: Long = 1000
@@ -36,29 +37,40 @@ class MainViewModel : ViewModel() {
             delay(RETRY_DELAY_MS)
         }
         val json = JSONObject(response.second)
-        hostPC = Computer(json.getInt("cpu_count"))
+        initComputer(json)
         _ready.postValue(true)
 
         // Continuously request data from server
         while (true) {
             response = server.request()
-            withContext(Dispatchers.Default) {
-                updateResponse(response)
+            _response.postValue(response)
+            if (response.first == 200) {
+                withContext(Dispatchers.Default) {
+                    hostPC.update(JSONObject(response.second))
+                }
             }
             delay(RETRY_DELAY_MS)
         }
     }
 
-    private fun updateResponse(response: Pair<Int, String>) {
-        _response.postValue(response)
-        if (response.first == 200) {
-            try {
-                val json = JSONObject(response.second)
-                hostPC.update(json)
-            } catch (e: JSONException) {
-                e.printStackTrace()
-            }
+    private fun initComputer(json: JSONObject) {
+        // CPU data
+        val cpuCount = json.getInt("cpu_count")
+        // Memory data
+        val memory = json.getInt("memory_total")
+        // Storage disks data
+        val disks = json.getJSONArray("disk_partitions")
+        Log.d("MVM", "Disk Length: ${disks.length()}")
+        val storageDisksList = ArrayList<StorageDisk>(disks.length())
+        for (index in 0 until disks.length()) {
+            val disk = disks.getJSONObject(index)
+            val label = disk.getString("device")
+            val fstype = disk.getString("fstype")
+            val capacity = disk.getLong("capacity")
+            storageDisksList.add(StorageDisk(label, fstype, capacity))
         }
+        // Initialise Computer class
+        this.hostPC = Computer(cpuCount, memory, storageDisksList)
     }
 
 }
