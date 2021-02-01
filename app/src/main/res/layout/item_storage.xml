@@ -63,7 +63,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:paddingLeft="8dp"
-                android:text="@{@string/format_cpu_usage(disk.usage)}"
+                android:text="@{@string/format_usage(disk.usage)}"
                 app:layout_constraintBottom_toBottomOf="@+id/progress_usage"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_weight="1"

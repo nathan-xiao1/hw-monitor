@@ -11,8 +11,8 @@
     <string name="menu_settings">Setting</string>
     
     <string name="format_cpu_number">#%1$d</string>
-    <string name="format_cpu_usage">%1$d%%</string>
-    <string name="format_cpu_temperature">%1$d°c</string>
+    <string name="format_usage">%1$d%%</string>
+    <string name="format_temperature">%1$d°c</string>
 
     <string name="item_cpu_usage_label">Usage</string>
     <string name="item_cpu_temperature_label">Temperature</string>
@@ -21,7 +21,7 @@
     <string name="label_min">Min</string>
     <string name="label_max">Max</string>
     <string name="description_exclamation_mark">Exclamation Mark</string>
-    <string name="label_logical_processor">Logical Core</string>
+    <string name="label_physical_core">Physical Core</string>
     <string name="label_free">Free</string>
     <string name="label_used">Used</string>
     <string name="description_usage">Usage</string>

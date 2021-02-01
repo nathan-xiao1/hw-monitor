@@ -29,7 +29,7 @@
 
             <include
                 layout="@layout/header_cpu"
-                bind:computer="@{viewmodel.hostPC}" />
+                bind:core="@{viewmodel.hostPC.cpuCores[0]}" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

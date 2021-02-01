@@ -7,7 +7,7 @@ import kotlin.math.min
 import kotlin.random.Random
 
 // Model representing an individual CPU core item on UI
-class LogicalProcessor(val processorID: Int) {
+class CPUCore(val processorID: Int) {
 
     private val _usage = MutableLiveData(-1)
     private val _usageMin = MutableLiveData(Integer.MAX_VALUE)

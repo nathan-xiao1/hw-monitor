@@ -7,7 +7,7 @@
 
         <variable
             name="viewmodel"
-            type="com.destack.hwmonitor.data.LogicalProcessor" />
+            type="com.destack.hwmonitor.data.CPUCore" />
     </data>
 
     <LinearLayout
@@ -35,7 +35,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/label_logical_processor"
+                android:text="@string/label_physical_core"
                 android:textAlignment="center"
                 android:textColor="@color/greyDarker"
                 android:textSize="8sp" />
@@ -102,7 +102,7 @@
                 android:id="@+id/cpu_usage_current_value"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@{@string/format_cpu_usage(viewmodel.usage)}"
+                android:text="@{@string/format_usage(viewmodel.usage)}"
                 android:textAlignment="center"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="@+id/label_current"
@@ -134,7 +134,7 @@
                 android:id="@+id/cpu_usage_min_value"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@{@string/format_cpu_usage(viewmodel.usageMin)}"
+                android:text="@{@string/format_usage(viewmodel.usageMin)}"
                 android:textAlignment="center"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="@+id/label_min"
@@ -166,7 +166,7 @@
                 android:id="@+id/cpu_usage_max_value"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@{@string/format_cpu_usage(viewmodel.usageMax)}"
+                android:text="@{@string/format_usage(viewmodel.usageMax)}"
                 android:textAlignment="center"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="@+id/label_max"

@@ -57,7 +57,7 @@ class MainViewModel : ViewModel() {
         // CPU data
         val cpuCount = json.getInt("cpu_count")
         // Memory data
-        val memory = json.getInt("memory_total")
+        val memory = json.getLong("memory_total")
         // Storage disks data
         val disks = json.getJSONArray("disk_partitions")
         Log.d("MVM", "Disk Length: ${disks.length()}")

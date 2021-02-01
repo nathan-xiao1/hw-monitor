@@ -44,7 +44,7 @@ class CPUFragment : Fragment() {
                 binding.layoutError.visibility = View.GONE
                 binding.recyclerView.visibility = View.VISIBLE
                 binding.viewmodel = viewModel
-                customAdapter.dataset = viewModel.hostPC.logicalProcessors
+                customAdapter.dataset = viewModel.hostPC.cpuCores.subList(1, viewModel.hostPC.cpuCores.size)
             }
         })
 

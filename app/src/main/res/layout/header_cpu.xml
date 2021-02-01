@@ -6,8 +6,8 @@
     <data>
 
         <variable
-            name="computer"
-            type="com.destack.hwmonitor.data.Computer" />
+            name="core"
+            type="com.destack.hwmonitor.data.CPUCore" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -53,7 +53,7 @@
                 android:id="@+id/package_usage_value"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@{computer.cpuUsagePackage == null ? `N/A` : @string/format_cpu_usage(computer.cpuUsagePackage)}"
+                android:text="@{core.usage == null ? `N/A` : @string/format_usage(core.usage)}"
                 android:textColor="@color/white"
                 android:textSize="38sp" />
 
@@ -136,7 +136,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="@{computer.cpuUsagePackage == null ? `N/A` : @string/format_cpu_usage(computer.cpuUsagePackage)}"
+                    android:text="@{core.usage == null ? `N/A` : @string/format_usage(core.usage)}"
                     android:textAlignment="center"
                     android:textColor="@color/white"
                     tools:text="0%" />
@@ -151,7 +151,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="@{computer.cpuUsagePackageMin == null ? `N/A` : @string/format_cpu_usage(computer.cpuUsagePackageMin)}"
+                    android:text="@{core.usageMin == null ? `N/A` : @string/format_usage(core.usageMin)}"
                     android:textAlignment="center"
                     android:textColor="@color/white"
                     tools:text="0%" />
@@ -166,7 +166,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="@{computer.cpuUsagePackageMax == null ? `N/A` : @string/format_cpu_usage(computer.cpuUsagePackageMax)}"
+                    android:text="@{core.usageMax == null ? `N/A` : @string/format_usage(core.usageMax)}"
                     android:textAlignment="center"
                     android:textColor="@color/white"
                     tools:text="100%" />
@@ -193,7 +193,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="0°c"
+                    android:text="@{core.temperature == null ? `N/A` : @string/format_temperature(core.temperature)}"
                     android:textAlignment="center"
                     android:textColor="@color/white" />
 
@@ -207,7 +207,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="32°c"
+                    android:text="@{core.temperatureMin == null ? `N/A` : @string/format_temperature(core.temperatureMin)}"
                     android:textAlignment="center"
                     android:textColor="@color/white" />
 
@@ -221,7 +221,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="100°c"
+                    android:text="@{core.temperatureMax == null ? `N/A` : @string/format_temperature(core.temperatureMax)}"
                     android:textAlignment="center"
                     android:textColor="@color/white" />
 
