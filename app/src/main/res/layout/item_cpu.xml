@@ -10,7 +10,8 @@
             type="com.destack.hwmonitor.data.CPUCore" />
     </data>
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/container_main"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="6dp"
@@ -19,69 +20,99 @@
         android:baselineAligned="false"
         android:elevation="2dp"
         android:gravity="center_vertical"
-        android:orientation="horizontal"
-        android:padding="2dp"
-        android:paddingHorizontal="8dp"
-        android:weightSum="10">
+        android:paddingHorizontal="6dp"
+        android:paddingVertical="5dp">
 
-        <LinearLayout
+        <TextView
+            android:id="@+id/label_physical_core"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1.5"
-            android:gravity="center"
-            android:orientation="vertical"
-            android:padding="5dp">
+            android:text="@string/label_physical_core"
+            android:textAlignment="center"
+            android:textColor="@color/greyDarker"
+            android:textSize="8sp"
+            app:layout_constraintEnd_toStartOf="@+id/cpu_usage_bar"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_weight="3"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/label_physical_core"
-                android:textAlignment="center"
-                android:textColor="@color/greyDarker"
-                android:textSize="8sp" />
-
-            <TextView
-                android:id="@+id/id_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@{@string/format_cpu_number(viewmodel.processorID)}"
-                android:textAlignment="center"
-                android:textColor="@color/colorPrimary"
-                tools:text="#1" />
-
-        </LinearLayout>
-
-        <LinearLayout
+        <TextView
+            android:id="@+id/value_core_id"
             android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="4"
+            android:layout_height="wrap_content"
+            android:text="@{@string/format_cpu_number(viewmodel.processorID)}"
+            android:textAlignment="center"
+            android:textColor="@color/colorPrimary"
+            app:layout_constraintEnd_toEndOf="@+id/label_physical_core"
+            app:layout_constraintStart_toStartOf="@+id/label_physical_core"
+            app:layout_constraintTop_toBottomOf="@+id/label_physical_core"
+            tools:text="#1" />
+
+        <ProgressBar
+            android:id="@+id/cpu_usage_bar"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="6dp"
+            android:indeterminate="false"
+            android:max="100"
+            android:paddingTop="0.5dp"
+            android:progress="@{viewmodel.usage}"
+            android:progressTint="@color/colorPrimary"
+            android:scaleY="3"
+            app:layout_constraintBottom_toBottomOf="@+id/value_core_id"
+            app:layout_constraintEnd_toStartOf="@+id/label_usage_top"
+            app:layout_constraintHorizontal_weight="15"
+            app:layout_constraintStart_toEndOf="@+id/label_physical_core"
+            app:layout_constraintTop_toTopOf="@+id/label_physical_core" />
+
+
+        <TextView
+            android:id="@+id/label_usage_top"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
             android:gravity="center"
-            android:orientation="vertical"
-            android:padding="5dp">
+            android:text="@{@string/format_usage(viewmodel.usage)}"
+            app:layout_constraintBottom_toBottomOf="@+id/value_core_id"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_weight="2"
+            app:layout_constraintStart_toEndOf="@+id/cpu_usage_bar"
+            app:layout_constraintTop_toTopOf="@+id/label_physical_core"
+            tools:text="55%" />
 
-            <ProgressBar
-                android:id="@+id/cpu_usage_bar"
-                style="?android:attr/progressBarStyleHorizontal"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="-4dp"
-                android:layout_marginBottom="-8dp"
-                android:indeterminate="false"
-                android:max="100"
-                android:progress="@{viewmodel.usage}"
-                android:progressTint="@color/colorPrimary"
-                android:scaleY="3" />
-
-        </LinearLayout>
+        <androidx.constraintlayout.widget.Barrier
+            android:id="@+id/barrier_first_row"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:barrierDirection="bottom"
+            app:barrierMargin="4dp"
+            app:constraint_referenced_ids="label_physical_core,value_core_id,cpu_usage_bar"
+            tools:layout_editor_absoluteX="6dp"
+            tools:layout_editor_absoluteY="5dp" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/stat_detail"
+            android:id="@+id/container_usage"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="4.5"
-            android:baselineAligned="false"
-            android:gravity="center"
-            android:orientation="horizontal">
+            android:layout_height="match_parent"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="4dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/container_temperature"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/barrier_first_row">
+
+            <ImageView
+                android:id="@+id/image_usage"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintHeight_percent="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintWidth_percent="0.1"
+                app:srcCompat="@drawable/ic_microchip_solid"
+                app:tint="@color/grey" />
 
             <TextView
                 android:id="@+id/label_current"
@@ -92,15 +123,12 @@
                 android:textColor="@color/greyDarker"
                 android:textSize="8sp"
                 app:layout_constraintEnd_toStartOf="@+id/label_min"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintHorizontal_chainStyle="spread"
-                app:layout_constraintStart_toEndOf="@+id/cpu_usage_max_value"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/image_usage"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/cpu_usage_current_value"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="@{@string/format_usage(viewmodel.usage)}"
                 android:textAlignment="center"
@@ -126,13 +154,12 @@
                 android:textColor="@color/greyDarker"
                 android:textSize="8sp"
                 app:layout_constraintEnd_toStartOf="@+id/label_max"
-                app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toEndOf="@+id/label_current"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/cpu_usage_min_value"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="@{@string/format_usage(viewmodel.usageMin)}"
                 android:textAlignment="center"
@@ -145,7 +172,7 @@
             <View
                 style="@style/Divider"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="@+id/label_min"
+                app:layout_constraintEnd_toStartOf="@+id/label_max"
                 app:layout_constraintStart_toEndOf="@+id/label_min"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -158,13 +185,12 @@
                 android:textColor="@color/greyDarker"
                 android:textSize="8sp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toEndOf="@+id/label_min"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/cpu_usage_max_value"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="@{@string/format_usage(viewmodel.usageMax)}"
                 android:textAlignment="center"
@@ -176,6 +202,125 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-    </LinearLayout>
+        <View
+            style="@style/Divider"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="@+id/container_usage"
+            app:layout_constraintEnd_toStartOf="@+id/container_temperature"
+            app:layout_constraintStart_toEndOf="@+id/container_usage"
+            app:layout_constraintTop_toTopOf="@+id/container_usage" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/container_temperature"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginStart="4dp"
+            android:layout_marginEnd="8dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/container_usage"
+            app:layout_constraintTop_toBottomOf="@id/barrier_first_row">
+
+            <ImageView
+                android:id="@+id/image_temperature"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:scaleType="centerInside"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintHeight_percent="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintWidth_percent="0.15"
+                app:srcCompat="@drawable/ic_thermometer_half_solid"
+                app:tint="@color/grey" />
+
+            <TextView
+                android:id="@+id/label_current_temperature"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/label_current"
+                android:textAlignment="center"
+                android:textColor="@color/greyDarker"
+                android:textSize="8sp"
+                app:layout_constraintEnd_toStartOf="@+id/label_min_temperature"
+                app:layout_constraintHorizontal_chainStyle="spread"
+                app:layout_constraintStart_toEndOf="@id/image_temperature"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/value_current_temperature"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{@string/format_temperature(viewmodel.temperature)}"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/label_current_temperature"
+                app:layout_constraintStart_toStartOf="@+id/label_current_temperature"
+                app:layout_constraintTop_toBottomOf="@+id/label_current_temperature"
+                tools:text="0°c" />
+
+            <View
+                style="@style/Divider"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/label_min_temperature"
+                app:layout_constraintStart_toEndOf="@+id/label_current_temperature"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/label_min_temperature"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/label_min"
+                android:textAlignment="center"
+                android:textColor="@color/greyDarker"
+                android:textSize="8sp"
+                app:layout_constraintEnd_toStartOf="@+id/label_max_temperature"
+                app:layout_constraintStart_toEndOf="@+id/label_current_temperature"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/value_min_temperature"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{@string/format_temperature(viewmodel.temperatureMin)}"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/label_min_temperature"
+                app:layout_constraintStart_toStartOf="@+id/label_min_temperature"
+                app:layout_constraintTop_toBottomOf="@+id/label_min_temperature"
+                tools:text="0°c" />
+
+            <View
+                style="@style/Divider"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/label_max_temperature"
+                app:layout_constraintStart_toEndOf="@+id/label_min_temperature"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/label_max_temperature"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/label_max"
+                android:textAlignment="center"
+                android:textColor="@color/greyDarker"
+                android:textSize="8sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/label_min_temperature"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/value_max_temperature"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{@string/format_temperature(viewmodel.temperatureMax)}"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/label_max_temperature"
+                app:layout_constraintStart_toStartOf="@+id/label_max_temperature"
+                app:layout_constraintTop_toBottomOf="@+id/label_max_temperature"
+                tools:text="100°c" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </layout>
