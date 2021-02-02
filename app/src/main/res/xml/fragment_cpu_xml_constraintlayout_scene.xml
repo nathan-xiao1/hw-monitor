@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<MotionScene xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:motion="http://schemas.android.com/apk/res-auto">
+
+    <Transition
+        android:id="@+id/scrollTransition"
+        motion:constraintSetEnd="@+id/endScroll"
+        motion:constraintSetStart="@id/startScroll"
+        motion:motionInterpolator="easeInOut">
+
+        <OnSwipe
+            motion:dragDirection="dragUp"
+            motion:touchAnchorId="@id/recycler_view"
+            motion:limitBoundsTo="@id/recycler_view"/>
+
+    </Transition>
+
+    <ConstraintSet android:id="@+id/startScroll">
+        <Constraint
+            android:id="@+id/header"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:elevation="2dp"
+            motion:layout_constraintTop_toTopOf="parent" />
+        <Constraint
+            android:id="@+id/recycler_view"
+            motion:applyMotionScene="false"
+            motion:visibilityMode="ignore"
+            motion:layout_constraintEnd_toEndOf="parent"
+            motion:layout_constraintStart_toStartOf="parent"
+            motion:layout_constraintBottom_toBottomOf="parent"
+            motion:layout_constraintTop_toBottomOf="@+id/header"/>
+        <Constraint
+            android:id="@+id/layout_error"
+            motion:applyMotionScene="false"
+            motion:visibilityMode="ignore"
+            motion:layout_constraintEnd_toEndOf="parent"
+            motion:layout_constraintStart_toStartOf="parent"
+            motion:layout_constraintBottom_toBottomOf="parent"
+            motion:layout_constraintTop_toBottomOf="@+id/header" />
+    </ConstraintSet>
+
+    <ConstraintSet android:id="@+id/endScroll">
+        <Constraint
+            android:id="@+id/header"
+            android:layout_width="match_parent"
+            android:layout_height="68dp"
+            android:elevation="2dp"
+            motion:layout_constraintTop_toTopOf="parent" />
+        <Constraint
+            android:id="@+id/recycler_view"
+            motion:applyMotionScene="false"
+            motion:visibilityMode="ignore"
+            motion:layout_constraintEnd_toEndOf="parent"
+            motion:layout_constraintStart_toStartOf="parent"
+            motion:layout_constraintBottom_toBottomOf="parent"
+            motion:layout_constraintTop_toBottomOf="@+id/header"/>
+        <Constraint
+            android:id="@+id/layout_error"
+            motion:applyMotionScene="false"
+            motion:visibilityMode="ignore"
+            motion:layout_constraintEnd_toEndOf="parent"
+            motion:layout_constraintStart_toStartOf="parent"
+            motion:layout_constraintBottom_toBottomOf="parent"
+            motion:layout_constraintTop_toBottomOf="@+id/header" />
+    </ConstraintSet>
+
+</MotionScene>

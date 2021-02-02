@@ -12,7 +12,8 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        tools:background="@color/colorPrimary">
 
         <LinearLayout
             android:id="@+id/main_header"
@@ -42,9 +43,10 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/main_usage"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="5dp"
             android:orientation="vertical"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent">
@@ -55,7 +57,8 @@
                 android:layout_height="wrap_content"
                 android:text="@{core.usage == null ? `N/A` : @string/format_usage(core.usage)}"
                 android:textColor="@color/white"
-                android:textSize="38sp" />
+                android:textSize="38sp"
+                tools:text="100%"/>
 
         </LinearLayout>
 
